@@ -124,7 +124,10 @@
         .animate-scroll-rtl {
             animation: scroll-rtl 40s linear infinite;
         }
-
+/* Pausar la galería al pasar el mouse */
+        .pause-on-hover:hover .animate-scroll-rtl {
+            animation-play-state: paused;
+        }
         .animate-scroll-reviews {
             animation: scroll-reviews 35s linear infinite;
         }
@@ -227,51 +230,169 @@
             /* Aseguramos que el contenedor base también sea redondo */
             border-radius: 50%;
         }
+
+        /* --- EFECTO LUCIÉRNAGA PREMIUM (Botón Siguiente) --- */
+        
+        /* 1. Definimos la animación de rotación suave */
+        @keyframes border-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 2. La clase base del botón */
+        .btn-firefly {
+            position: relative;
+            overflow: hidden; /* Mantiene la luz dentro de los bordes redondeados */
+            z-index: 1; /* Necesario para las capas */
+        }
+
+        /* 3. CAPA 1: El haz de luz giratorio (La "Luciérnaga") */
+        .btn-firefly::before {
+            content: '';
+            position: absolute;
+            z-index: -2; /* Se coloca detrás de todo */
+            /* Hacemos el gradiente mucho más grande que el botón para que al girar cubra las esquinas */
+            top: -100%; left: -100%; width: 300%; height: 300%;
+            
+            /* EL TRUCO: Un gradiente cónico tipo radar.
+               Usa tus colores: transparente la mayoría del tiempo, y un destello de 'brand-olive' al final */
+            background: conic-gradient(
+                transparent 0%, 
+                transparent 85%, 
+                #a3c459 95%,  /* Color de la luz (brand-olive claro) */
+                transparent 100%
+            );
+            
+            /* La animación: gira en 4 segundos de forma infinita y lineal */
+            animation: border-spin 4s linear infinite;
+        }
+
+        /* 4. CAPA 2: La máscara interna (Para que solo se vea el borde) */
+        .btn-firefly::after {
+            content: '';
+            position: absolute;
+            z-index: -1; /* Detrás del texto, delante de la luz */
+            /* 'inset: 2px' define el grosor del borde de luz (2 píxeles) */
+            inset: 2px; 
+            background-color: #2d5016; /* Debe ser del MISMO color que el fondo del botón (brand-dark) */
+            border-radius: inherit; /* Copia las esquinas redondeadas del botón padre */
+            transition: all 0.3s ease;
+        }
+
+        /* Opcional: Al pasar el mouse, la luz se vuelve un poco más intensa */
+        .btn-firefly:hover::before {
+             background: conic-gradient(
+                transparent 0%, 
+                transparent 80%, 
+                #d4e6a5 95%, /* Un verde más brillante al hacer hover */
+                transparent 100%
+            );
+        }
     </style>
 </head>
 <body class="min-h-screen overflow-x-hidden">
 
     <!-- Navbar -->
-    <nav id="main-navbar" class="fixed top-0 left-0 w-full z-50 py-4 px-4 md:px-12 transition-all duration-500">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <img src="img/logo.png" alt="Logo La Casa Voltiá" class="h-16 md:h-30 w-auto object-contain hover:scale-105 transition-transform">
-                <span id="nav-title" class="font-serif text-lg md:text-xl hidden sm:block transition-colors text-brand-dark">
-                </span>
-            </div>
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 font-serif transition-all duration-300">
+        
+        <div id="top-banner" class="w-full bg-gradient-to-r from-brand-olive via-[#7da140] to-brand-dark text-white text-sm py-2.5 relative overflow-hidden z-50 font-sans">
+            <div class="flex w-max animate-scroll-rtl whitespace-nowrap hover:[animation-play-state:paused] items-center">
+                
+                <div class="flex items-center mx-4">
+                    <span class="font-light tracking-widest text-white/90">ABIERTO TODOS LOS DÍAS: 9:00 AM - 6:00 PM</span>
+                    
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    
+                    <span class="font-light tracking-wide">Niños menores de 3 y Adultos mayores de 85 años <span class="font-medium text-brand-pink border-b border-brand-pink/40">GRATIS</span></span>
+                    
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    
+                    <span class="font-light tracking-wider">Sumérgete en nuestro recorrido 360°</span>
+                    
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    
+                    <span class="font-light italic tracking-widest opacity-80">¡Un plan que no te puedes perder!</span>
+                    
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                </div>
 
-            <!-- Desktop Nav -->
-            <div class="hidden md:flex gap-8 font-serif text-lg tracking-wide" id="desktop-nav">
-                <a href="#experiencia" class="nav-link text-brand-dark hover:text-brand-olive transition-colors">Experiencia</a>
-                <a href="#gastronomia" class="nav-link text-brand-dark hover:text-brand-olive transition-colors">Gastronomía</a>
-                <a href="#galeria" class="nav-link text-brand-dark hover:text-brand-olive transition-colors">Galería</a>
-                <a href="#ubicacion" class="nav-link text-brand-dark hover:text-brand-olive transition-colors">Ubicación</a>
-            </div>
+                <div class="flex items-center mx-4">
+                    <span class="font-light tracking-widest text-white/90">ABIERTO TODOS LOS DÍAS: 9:00 AM - 6:00 PM</span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    <span class="font-light tracking-wide">Niños menores de 3 y Adultos mayores de 85 años <span class="font-medium text-brand-pink border-b border-brand-pink/40">GRATIS</span></span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    <span class="font-light tracking-wider">Sumérgete en nuestro recorrido 360°</span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    <span class="font-light italic tracking-widest opacity-80">¡Un plan que no te puedes perder!</span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                </div>
 
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden p-2" onclick="toggleMobileMenu()">
-                <svg id="menu-icon" class="w-6 h-6 text-brand-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-                <svg id="close-icon" class="w-6 h-6 text-brand-dark hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+                <div class="flex items-center mx-4">
+                    <span class="font-light tracking-widest text-white/90">ABIERTO TODOS LOS DÍAS: 9:00 AM - 6:00 PM</span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    <span class="font-light tracking-wide">Niños menores de 3 y Adultos mayores de 85 años <span class="font-medium text-brand-pink border-b border-brand-pink/40">GRATIS</span></span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    <span class="font-light tracking-wider">Sumérgete en nuestro recorrido 360°</span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    <span class="font-light italic tracking-widest opacity-80">¡Un plan que no te puedes perder!</span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                </div>
+                
+                <div class="flex items-center mx-4">
+                    <span class="font-light tracking-widest text-white/90">ABIERTO TODOS LOS DÍAS: 9:00 AM - 6:00 PM</span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    <span class="font-light tracking-wide">Niños menores de 3 y Adultos mayores de 85 años <span class="font-medium text-brand-pink border-b border-brand-pink/40">GRATIS</span></span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    <span class="font-light tracking-wider">Sumérgete en nuestro recorrido 360°</span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                    <span class="font-light italic tracking-widest opacity-80">¡Un plan que no te puedes perder!</span>
+                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
+                </div>
+
+            </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden mx-4 mt-2">
-            <div class="glass-card-solid p-4 rounded-2xl flex flex-col gap-4">
-                <a href="#experiencia" class="font-serif text-lg text-brand-dark hover:text-brand-olive transition-colors py-2" onclick="closeMobileMenu()">Experiencia</a>
-                <a href="#gastronomia" class="font-serif text-lg text-brand-dark hover:text-brand-olive transition-colors py-2" onclick="closeMobileMenu()">Gastronomía</a>
-                <a href="#galeria" class="font-serif text-lg text-brand-dark hover:text-brand-olive transition-colors py-2" onclick="closeMobileMenu()">Galería</a>
-                <a href="#ubicacion" class="font-serif text-lg text-brand-dark hover:text-brand-olive transition-colors py-2" onclick="closeMobileMenu()">Ubicación</a>
+        <nav class="relative w-full bg-white/95 backdrop-blur-xl border-b border-white/20 shadow-lg transition-all duration-300">
+            <div class="container mx-auto px-4 md:px-8 py-3 flex items-center justify-between">
+                
+                <a href="#" class="flex-shrink-0 group">
+                    <img src="img/logo.png" alt="La Casa Voltiá" class="h-14 md:h-16 w-auto object-contain transition-transform duration-500 group-hover:scale-110">
+                </a>
+
+                <ul class="hidden md:flex items-center space-x-8 text-lg font-medium text-brand-dark">
+                    <li><a href="#recorrido-360" class="hover:text-brand-olive transition-colors relative group py-2">Recorrido 360°</a></li>
+                    <li><a href="#experiencia" class="hover:text-brand-olive transition-colors relative group py-2">Experiencia</a></li>
+                    <li><a href="#gastronomia" class="hover:text-brand-olive transition-colors relative group py-2">Gastronomía</a></li>
+                    <li><a href="#galeria" class="hover:text-brand-olive transition-colors relative group py-2">Galería</a></li>
+                    <li><a href="#ubicacion" class="hover:text-brand-olive transition-colors relative group py-2">Ubicación</a></li>
+                </ul>
+
+                <div class="hidden md:flex items-center gap-4">
+                    <a href="#cotizador" class="bg-brand-dark text-white px-8 py-2.5 rounded-full font-bold shadow-lg transition-all duration-300 hover:bg-brand-olive hover:-translate-y-1">
+                        Reservar
+                    </a>
+                </div>
+
+                <button id="mobile-menu-btn" class="md:hidden text-brand-dark p-2 rounded-lg hover:bg-brand-beige/50 transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
             </div>
-        </div>
-    </nav>
+
+            <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-t border-brand-beige shadow-2xl overflow-hidden">
+                <div class="p-6 flex flex-col gap-4">
+                    <a href="#recorrido-360" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Recorrido 360°</a>
+                    <a href="#experiencia" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Experiencia</a>
+                    <a href="#gastronomia" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Gastronomía</a>
+                    <a href="#galeria" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Galería</a>
+                    <a href="#ubicacion" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Ubicación</a>
+                    <a href="#cotizador" class="mt-4 w-full bg-brand-dark text-white text-center py-4 rounded-xl font-bold text-lg shadow-md mobile-link">¡Reservar Ahora!</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center pt-20 pb-12 px-4 overflow-hidden">
+    <section class="relative min-h-screen flex items-center justify-center pt-36 pb-18 px-4 overflow-hidden">
         <!-- Background -->
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-gradient-to-br from-brand-beige via-brand-beige/95 to-brand-olive/10"></div>
@@ -317,15 +438,8 @@
                             <button onclick="updateCount('adults', 1)" class="w-10 h-10 rounded-full bg-brand-dark text-white shadow-md flex items-center justify-center font-bold hover:bg-brand-olive transition-all hover-scale">+</button>
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-bold mb-2">Niños &lt; 3 años (Gratis)</label>
-                        <div class="flex items-center justify-between bg-brand-beige/50 p-3 rounded-xl">
-                            <button onclick="updateCount('children', -1)" class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center font-bold hover:bg-brand-olive hover:text-white transition-all hover-scale">-</button>
-                            <span id="child-count" class="text-2xl font-bold font-serif">0</span>
-                            <button onclick="updateCount('children', 1)" class="w-10 h-10 rounded-full bg-brand-dark text-white shadow-md flex items-center justify-center font-bold hover:bg-brand-olive transition-all hover-scale">+</button>
-                        </div>
-                    </div>
-                    <button onclick="goToStep(2)" class="w-full h-12 btn-primary text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2">
+                    
+                    <button onclick="goToStep(2)" class="w-full h-12 btn-primary text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 btn-firefly">
                         Siguiente
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
@@ -484,44 +598,52 @@
             <h2 class="text-4xl md:text-5xl font-serif mb-4">Nuestros Espacios</h2>
             <p class="text-brand-dark/60">Fachada, interiores y momentos únicos</p>
         </div>
-        <div class="flex overflow-hidden">
-            <div class="flex gap-4 animate-scroll-rtl whitespace-nowrap">
-                <!-- Gallery Images (duplicated for infinite scroll) -->
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/1.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/2.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/3.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/4.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/5.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/6.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/7.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/8.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/9.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/10.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/11.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/12.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/13.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/14.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/15.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/16.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/17.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <!-- Duplicated for seamless loop -->
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/1.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/2.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/3.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/4.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/5.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/6.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/7.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/8.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/9.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/10.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/11.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/12.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/13.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/14.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/15.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/16.jpg" class="w-full h-full object-cover rounded-xl"></div>
-                <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 glass-card p-1"><img src="img/17.jpg" class="w-full h-full object-cover rounded-xl"></div>
+        
+        <div class="relative w-full pause-on-hover">
+            
+            <div class="absolute left-0 top-0 h-full w-20 md:w-32 z-10 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+            
+            <div class="absolute right-0 top-0 h-full w-20 md:w-32 z-10 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
+
+            <div class="flex overflow-hidden">
+                <div class="flex gap-6 animate-scroll-rtl whitespace-nowrap py-4 px-4">
+                    
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/1.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/2.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/3.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/4.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/5.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/6.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/7.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/8.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/9.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/10.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/11.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/12.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/13.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/14.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/15.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/16.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/17.jpg" class="w-full h-full object-cover"></div>
+
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/1.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/2.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/3.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/4.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/5.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/6.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/7.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/8.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/9.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/10.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/11.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/12.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/13.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/14.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/15.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/16.jpg" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/17.jpg" class="w-full h-full object-cover"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -935,32 +1057,30 @@
             }
         }
 
-        // WhatsApp
+        // WhatsApp (Actualizado: Sin niños y con número real)
         function sendWhatsApp() {
-            // 1. Obtenemos los valores y quitamos espacios vacíos al principio/final (.trim)
             const visitDate = document.getElementById('visit-date').value;
             const userName = document.getElementById('user-name').value.trim();
             const userPhone = document.getElementById('user-phone').value.trim();
             const total = adults * 20000;
             
-            // 2. EL GUARDIA DE SEGURIDAD (Validación)
-            // Si el nombre está vacío O el teléfono está vacío...
+            // Validación básica
             if (userName === "" || userPhone === "") {
-                // ...muestra este mensaje y DETÉN la función (return)
                 alert("Por favor, escribe tu Nombre y tu WhatsApp para poder enviarte la cotización.");
                 return; 
             }
 
-            // 3. Si todo está lleno, procede a crear el mensaje y enviarlo
+            // Mensaje limpio (Sin preguntar por niños)
             const message = encodeURIComponent(
-                '¡Hola! Quiero reservar:\n\n' +
-                '👥 Entradas: ' + adults + ' adultos\n' +
-                '👶 Niños (<3 años): ' + children + '\n' +
+                '¡Hola! Quiero reservar en La Casa Voltiá:\n\n' +
+                '🎟️ Entradas: ' + adults + ' personas\n' +
                 '📅 Fecha: ' + visitDate + '\n' +
                 '💰 Total: $' + total.toLocaleString() + '\n\n' +
                 'Nombre: ' + userName + '\n' +
                 'Teléfono: ' + userPhone
             );
+            
+            // Reemplaza el número aquí si necesitas cambiarlo en el futuro
             window.open('https://wa.me/573001234567?text=' + message, '_blank');
         }
 
@@ -974,51 +1094,36 @@
             menuIcon.classList.toggle('hidden');
             closeIcon.classList.toggle('hidden');
         }
+// --- NUEVA LÓGICA DEL MENÚ ---
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const topBanner = document.getElementById('top-banner');
 
-        function closeMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const menuIcon = document.getElementById('menu-icon');
-            const closeIcon = document.getElementById('close-icon');
-            
-            menu.classList.remove('open');
-            menuIcon.classList.remove('hidden');
-            closeIcon.classList.add('hidden');
-        }
+        // 1. Abrir/Cerrar Menú
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
 
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('main-navbar');
-            const navTitle = document.getElementById('nav-title');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const menuIcon = document.getElementById('menu-icon');
-            const closeIcon = document.getElementById('close-icon');
-            
+        // 2. Cerrar menú al tocar un enlace
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 3. Efecto Scroll (Esconder la barra de colores al bajar)
+        window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
-                navbar.classList.add('glass-navbar', 'py-2');
-                navbar.classList.remove('py-4');
-                navTitle.classList.remove('text-brand-dark');
-                navTitle.classList.add('text-white');
-                navLinks.forEach(link => {
-                    link.classList.remove('text-brand-dark', 'hover:text-brand-olive');
-                    link.classList.add('text-white', 'hover:text-brand-pink');
-                });
-                menuIcon.classList.remove('text-brand-dark');
-                menuIcon.classList.add('text-white');
-                closeIcon.classList.remove('text-brand-dark');
-                closeIcon.classList.add('text-white');
+                // Al bajar: Ocultamos el banner suavemente
+                topBanner.style.height = '0';
+                topBanner.style.padding = '0';
+                topBanner.style.opacity = '0';
             } else {
-                navbar.classList.remove('glass-navbar', 'py-2');
-                navbar.classList.add('py-4');
-                navTitle.classList.add('text-brand-dark');
-                navTitle.classList.remove('text-white');
-                navLinks.forEach(link => {
-                    link.classList.add('text-brand-dark', 'hover:text-brand-olive');
-                    link.classList.remove('text-white', 'hover:text-brand-pink');
-                });
-                menuIcon.classList.add('text-brand-dark');
-                menuIcon.classList.remove('text-white');
-                closeIcon.classList.add('text-brand-dark');
-                closeIcon.classList.remove('text-white');
+                // Al subir: Lo mostramos de nuevo
+                topBanner.style.height = 'auto'; 
+                topBanner.style.padding = '0.5rem 0';
+                topBanner.style.opacity = '1';
             }
         });
     </script>
