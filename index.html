@@ -291,40 +291,66 @@
             );
         }
 
-        /* --- EFECTO APPLE ICE (Vidrio Premium) --- */
-        .glass-apple {
-            /* Fondo muy transparente para que se vea el blur */
-            background: rgba(255, 255, 255, 0.25); 
-            /* Blur intenso estilo iOS */
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            /* Borde sutil y brillante */
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            /* Sombra interna para dar volumen (efecto hielo) y sombra externa suave */
-            box-shadow: 
-                inset 0 0 20px rgba(255, 255, 255, 0.3),
-                0 15px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        /* --- TEXTO CON GRADIENTE ANIMADO (Oro/Verde) --- */
+        /* --- NUEVO LUXURY STYLE (Correcciones Finales) --- */
+        
+        /* 1. Arreglo del Gradiente (Para que sea infinito y suave) */
         .text-gradient-flow {
-            /* Definimos los colores del degradado: Oliva -> Verde Oscuro -> Oliva claro */
             background: linear-gradient(90deg, #96872f, #2d5016, #d4e6a5, #96872f);
-            background-size: 300% auto; /* Hacemos el fondo grande para poder moverlo */
-            
-            /* Recortamos el fondo con la forma del texto */
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             color: transparent;
-            
-            /* Animación */
-            animation: gradient-flow 4s linear infinite;
+            animation: gradient-flow 5s linear infinite;
         }
 
         @keyframes gradient-flow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* 2. Nueva Animación "Pulse Luxury" (Blanca y suave, reemplaza a la verde) */
+        @keyframes pulse-luxury {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); transform: scale(1); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); transform: scale(1.05); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); transform: scale(1); }
+        }
+
+        .animate-pulse-luxury {
+            animation: pulse-luxury 3s infinite ease-out;
+            border-radius: 9999px;
+        }
+
+        /* Clase para desvanecer el vidrio suavemente */
+        .fade-out {
+            opacity: 0;
+            pointer-events: none; /* Esto permite que los clics pasen al tour */
+            transition: opacity 0.8s ease-out;
+        }
+
+        /* --- CORRECCIÓN FINAL: DISEÑO HIELO --- */
+        
+        /* 1. Botón "Átomo de Hielo" (Más blanco para que se lean las letras) */
+        .glass-apple {
+            /* Blanco al 35% (Suficiente para contraste, pero translúcido) */
+            background: rgba(255, 255, 255, 0.35) !important; 
+            
+            /* Blur fuerte para efecto congelado */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            
+            /* Borde blanco sólido */
+            border: 2px solid rgba(255, 255, 255, 0.8) !important;
+            
+            /* Sombra blanca suave */
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 2. Cortina del Tour (Más transparente, casi invisible) */
+        /* Esto quita el fondo negro y deja solo un desenfoque muy leve */
+        .tour-curtain-clean {
+            background-color: transparent !important; /* Cero color negro */
+            backdrop-filter: blur(2px); /* Solo un toquecito de desenfoque */
         }
     </style>
 </head>
@@ -527,23 +553,30 @@
                 <p class="text-brand-dark/70 max-w-2xl mx-auto italic">Explora cada rincón desde dentro. Una experiencia inmersiva total.</p>
             </div>
             
-            <div id="tour-container" class="aspect-[4/5] md:aspect-video w-full max-w-5xl mx-auto rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white relative group cursor-pointer" onclick="loadTour()">
+            <div id="tour-container" class="aspect-[4/5] md:aspect-video w-full max-w-5xl mx-auto rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white relative group bg-black">
                 
-                <img src="img/portada-tour.jpg" alt="Portada Tour 360" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 blur-[2px]">
-                
-                <div class="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <iframe 
+                    src="https://tour.panoee.net/69596ef3a02688e0fb189ab6" 
+                    name="Tour360"
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0"
+                    style="border:0;" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; vr" 
+                    allowfullscreen="true" 
+                    loading="eager" 
+                    scrolling="no"
+                    class="absolute inset-0 w-full h-full z-0">
+                </iframe>
 
-                <div class="absolute inset-0 flex items-center justify-center">
+                <div id="tour-overlay" onclick="hideOverlay()" class="absolute inset-0 z-10 flex flex-col items-center justify-center tour-curtain-clean cursor-pointer transition-all duration-500 hover:backdrop-blur-none">
                     
-                    <div class="w-48 h-48 glass-apple rounded-full flex flex-col items-center justify-center animate-breathe transition-transform duration-300 group-hover:scale-105">
-                        
+                    <div class="w-48 h-48 glass-apple rounded-full flex flex-col items-center justify-center animate-pulse-luxury transition-transform duration-300 group-hover:scale-105">
                         <span class="font-serif text-5xl font-bold text-gradient-flow mb-2">360°</span>
-                        
                         <div class="w-12 h-[1px] bg-brand-dark/30 mb-3"></div>
-                        
                         <span class="text-xs tracking-[0.25em] font-bold text-brand-dark uppercase opacity-80">CLICK TO TOUR</span>
-                        
                     </div>
+
                 </div>
             </div>
         </div>
@@ -1140,16 +1173,6 @@
             window.open('https://wa.me/573117171820?text=' + message, '_blank');
         }
 
-        // Mobile menu
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const menuIcon = document.getElementById('menu-icon');
-            const closeIcon = document.getElementById('close-icon');
-            
-            menu.classList.toggle('open');
-            menuIcon.classList.toggle('hidden');
-            closeIcon.classList.toggle('hidden');
-        }
 // --- NUEVA LÓGICA DEL MENÚ ---
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -1182,6 +1205,16 @@
                 topBanner.style.opacity = '1';
             }
         });
+
+        // Lógica Luxury: Solo ocultamos el vidrio, el tour ya está listo abajo
+        function hideOverlay() {
+            const overlay = document.getElementById('tour-overlay');
+            // Activamos la clase CSS que lo hace invisible
+            overlay.classList.add('fade-out');
+            
+            // Opcional: Quitamos el borde blanco para inmersión total
+            document.getElementById('tour-container').classList.remove('border-4', 'border-white');
+        }
     </script>
     <a href="https://wa.me/573117171820" target="_blank" class="fixed bottom-6 right-6 z-50 animate-breathe group" aria-label="Chat en WhatsApp">
         <div class="w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-2xl transition-all">
