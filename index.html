@@ -352,6 +352,28 @@
             background-color: transparent !important; /* Cero color negro */
             backdrop-filter: blur(2px); /* Solo un toquecito de desenfoque */
         }
+
+        /* ... (tus estilos anteriores) ... */
+        
+        /* PEGA ESTO AQUÍ (Justo antes de que cierre style) */
+        
+        /* --- EFECTO "CINE" PARA EL VIDEO HERO --- */
+        #video-poster {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: 1; transition: opacity 1.5s ease-in-out;
+        }
+        .hero-poster-image {
+            width: 100%; height: 100%; object-fit: cover;
+            animation: ken-burns 20s infinite alternate ease-in-out;
+            transform-origin: center center;
+        }
+        @keyframes ken-burns {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.08) translate(-2%, 0); }
+        }
+        .video-loaded { opacity: 0; pointer-events: none; }
+
+    </style> </head>
     </style>
 </head>
 <body class="min-h-screen overflow-x-hidden">
@@ -457,14 +479,19 @@
 
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center pt-36 pb-18 px-4 overflow-hidden">
-        <!-- Background -->
         <div class="absolute inset-0 z-0 overflow-hidden">
-            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
+            
+            <div class="absolute inset-0 bg-black/30 z-20"></div>
+
+            <video autoplay loop muted playsinline id="hero-video" class="absolute inset-0 w-full h-full object-cover z-0" oncanplaythrough="hidePoster()">
                 <source src="mp4/video-hero.mp4" type="video/mp4">
             </video>
 
-            <div class="absolute inset-0 bg-black/30 backdrop-blur-[2px]"></div>
-        </div>
+            <div id="video-poster">
+                <img src="img/poster-hero.jpg" alt="Portada Hero" class="hero-poster-image">
+            </div>
+
+            </div>
 
         <div class="container mx-auto grid md:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 md:pl-8 lg:pl-16">
             <!-- Hero Text -->
@@ -1215,6 +1242,22 @@
             // Opcional: Quitamos el borde blanco para inmersión total
             document.getElementById('tour-container').classList.remove('border-4', 'border-white');
         }
+
+        /* ... (tu código anterior) ... */
+
+        // PEGA ESTO AQUÍ (Justo antes de que cierre script)
+
+        // FUNCIÓN EFECTO CINE
+        function hidePoster() {
+            const poster = document.getElementById('video-poster');
+            if (poster) {
+                poster.classList.add('video-loaded');
+                setTimeout(() => { poster.remove(); }, 1600);
+            }
+        }
+        // Seguridad: Si el video falla en avisar, quitamos la foto a los 5s
+        setTimeout(hidePoster, 5000);
+
     </script>
     <a href="https://wa.me/573117171820" target="_blank" class="fixed bottom-6 right-6 z-50 animate-breathe group" aria-label="Chat en WhatsApp">
         <div class="w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-2xl transition-all">
