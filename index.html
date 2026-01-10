@@ -124,9 +124,11 @@
         .animate-scroll-rtl {
             animation: scroll-rtl 40s linear infinite;
         }
-/* Pausar la galería al pasar el mouse */
-        .pause-on-hover:hover .animate-scroll-rtl {
-            animation-play-state: paused;
+/* FIX: Pausar SOLO en PC (donde hay mouse). En celular seguirá moviéndose siempre. */
+        @media (hover: hover) {
+            .pause-on-hover:hover .animate-scroll-rtl {
+                animation-play-state: paused;
+            }
         }
         .animate-scroll-reviews {
             animation: scroll-reviews 35s linear infinite;
@@ -623,17 +625,18 @@
                     <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/4.jpg" class="w-full h-full object-cover"></div>
                     <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/5.jpg" class="w-full h-full object-cover"></div>
                     <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/6.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/7.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/8.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/9.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/10.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/11.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/12.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/13.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/14.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/15.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/16.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/17.jpg" class="w-full h-full object-cover"></div>
+                    
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/7.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/8.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/9.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/10.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/11.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/12.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/13.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/14.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/15.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/16.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/17.jpg" loading="lazy" class="w-full h-full object-cover"></div>
 
                     <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/1.jpg" class="w-full h-full object-cover"></div>
                     <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/2.jpg" class="w-full h-full object-cover"></div>
@@ -641,17 +644,18 @@
                     <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/4.jpg" class="w-full h-full object-cover"></div>
                     <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/5.jpg" class="w-full h-full object-cover"></div>
                     <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/6.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/7.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/8.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/9.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/10.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/11.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/12.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/13.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/14.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/15.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/16.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/17.jpg" class="w-full h-full object-cover"></div>
+                    
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/7.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/8.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/9.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/10.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/11.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/12.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/13.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/14.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/15.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/16.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/17.jpg" loading="lazy" class="w-full h-full object-cover"></div>
                 </div>
             </div>
         </div>
