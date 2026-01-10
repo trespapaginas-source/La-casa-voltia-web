@@ -290,6 +290,42 @@
                 transparent 100%
             );
         }
+
+        /* --- EFECTO APPLE ICE (Vidrio Premium) --- */
+        .glass-apple {
+            /* Fondo muy transparente para que se vea el blur */
+            background: rgba(255, 255, 255, 0.25); 
+            /* Blur intenso estilo iOS */
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            /* Borde sutil y brillante */
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            /* Sombra interna para dar volumen (efecto hielo) y sombra externa suave */
+            box-shadow: 
+                inset 0 0 20px rgba(255, 255, 255, 0.3),
+                0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- TEXTO CON GRADIENTE ANIMADO (Oro/Verde) --- */
+        .text-gradient-flow {
+            /* Definimos los colores del degradado: Oliva -> Verde Oscuro -> Oliva claro */
+            background: linear-gradient(90deg, #96872f, #2d5016, #d4e6a5, #96872f);
+            background-size: 300% auto; /* Hacemos el fondo grande para poder moverlo */
+            
+            /* Recortamos el fondo con la forma del texto */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            
+            /* Animación */
+            animation: gradient-flow 4s linear infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
     </style>
 </head>
 <body class="min-h-screen overflow-x-hidden">
@@ -491,17 +527,24 @@
                 <p class="text-brand-dark/70 max-w-2xl mx-auto italic">Explora cada rincón desde dentro. Una experiencia inmersiva total.</p>
             </div>
             
-            <div class="aspect-[4/5] md:aspect-video w-full max-w-5xl mx-auto glass-card-solid rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white relative">
+            <div id="tour-container" class="aspect-[4/5] md:aspect-video w-full max-w-5xl mx-auto rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white relative group cursor-pointer" onclick="loadTour()">
                 
-                <iframe 
-                    src="https://tour.panoee.net/69596ef3a02688e0fb189ab6" 
-                    class="w-full h-full border-none" 
-                    title="Recorrido 360"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen="true"
-                    loading="lazy">
-                </iframe>
+                <img src="img/portada-tour.jpg" alt="Portada Tour 360" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 blur-[2px]">
+                
+                <div class="absolute inset-0 bg-black/5 group-hover:bg-black/10 transition-colors duration-500"></div>
 
+                <div class="absolute inset-0 flex items-center justify-center">
+                    
+                    <div class="w-48 h-48 glass-apple rounded-full flex flex-col items-center justify-center animate-breathe transition-transform duration-300 group-hover:scale-105">
+                        
+                        <span class="font-serif text-5xl font-bold text-gradient-flow mb-2">360°</span>
+                        
+                        <div class="w-12 h-[1px] bg-brand-dark/30 mb-3"></div>
+                        
+                        <span class="text-xs tracking-[0.25em] font-bold text-brand-dark uppercase opacity-80">CLICK TO TOUR</span>
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </section>
