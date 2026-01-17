@@ -1,1308 +1,1462 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casa Voltiá - Diversión al Revés</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cabaña Los Pelaitos | Refugio Natural</title>
+  <meta name="description" content="Un refugio exclusivo diseñado para desconectar de la rutina. Sabanagrande, Atlántico.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Lato', sans-serif; background: #fafaf9; color: #292524; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+    img { max-width: 100%; height: auto; }
+    button { cursor: pointer; font-family: inherit; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Animations */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     
-    <link rel="icon" type="image/png" href="img/favicon.png">
-    <link rel="apple-touch-icon" href="img/logo.png">
+    /* ANIMACIÓN DE RESPLANDOR PARA EL TEXTO "SELECCIONA UN PLAN" */
+    @keyframes pulseGlow {
+      0% { text-shadow: 0 0 5px rgba(110, 231, 183, 0.2); opacity: 0.8; transform: scale(1); }
+      50% { text-shadow: 0 0 20px rgba(52, 211, 153, 0.8), 0 0 10px rgba(255, 255, 255, 0.5); opacity: 1; transform: scale(1.05); }
+      100% { text-shadow: 0 0 5px rgba(110, 231, 183, 0.2); opacity: 0.8; transform: scale(1); }
+    }
 
-    <meta name="theme-color" content="#2d5016">
-    <meta property="og:image" content="img/logo.png">
-    <meta property="og:title" content="La Casa Voltiá - Diversión al Revés" />
-    <meta property="og:description" content="Desafía la gravedad en Juan de Acosta. Un espacio diseñado para la diversión, fotos creativas y momentos inolvidables en familia." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="La Casa Voltiá - Diversión al Revés" />
-    <meta name="twitter:description" content="Desafía la gravedad en Juan de Acosta. Un espacio diseñado para la diversión, fotos creativas y momentos inolvidables en familia." />
+    /* ANIMACIÓN DE LATIDO PARA TARJETA PASADÍA */
+    @keyframes cardBreath {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(110, 231, 183, 0.0); }
+      50% { transform: scale(1.02); box-shadow: 0 0 20px 0 rgba(52, 211, 153, 0.3); border-color: rgba(52, 211, 153, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(110, 231, 183, 0.0); }
+    }
+
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease forwards; }
+    .animate-fade-in { animation: fadeIn 0.6s ease forwards; }
+    .animate-bounce { animation: bounce 2s ease-in-out infinite; }
+    .animate-spin { animation: spin 1s linear infinite; }
+    .delay-1 { animation-delay: 0.2s; opacity: 0; }
+    .delay-2 { animation-delay: 0.4s; opacity: 0; }
+    .delay-3 { animation-delay: 0.6s; opacity: 0; }
+
+    /* Noise texture */
+    .noise-texture::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .text-shadow { text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
+
+    /* NAV */
+    nav { position: fixed; width: 100%; z-index: 50; transition: all 0.5s; padding: 1.5rem 0; }
+    nav.scrolled { padding: 1rem 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .nav-inner { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; display: flex; justify-content: space-between; align-items: center; }
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    /* === LOGOS === */
+    .logo-img { height: 5rem; width: auto; transition: opacity 0.3s; }
+    /* Por defecto (Inicio): Muestra el V2 (Transparente), Oculta el V1 */
+    #logo-v1 { display: none; }
+    #logo-v2 { display: block; }
+    /* Cuando bajas (Scroll): Muestra el V1, Oculta el V2 */
+    nav.scrolled #logo-v1 { display: block; }
+    nav.scrolled #logo-v2 { display: none; }
+    /* En Celular: SIEMPRE muestra el V1 (Color) */
+    @media (max-width: 768px) {
+        .logo-img { height: 4rem; } /* Ajuste de tamaño para móvil */
+    }
+
+    .nav-links { display: none; gap: 2rem; align-items: center; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+    .nav-links button { background: none; border: none; transition: color 0.3s; }
+    .nav-links button:hover { color: #10b981; }
+    .mobile-menu-btn { display: block; background: none; border: none; }
+    @media (min-width: 768px) { .mobile-menu-btn { display: none; } }
+
+    /* Mobile Menu */
+    .mobile-menu { position: fixed; inset: 0; z-index: 60; background: #1c1917; color: #f5f5f4; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; transform: translateY(-100%); transition: transform 0.3s ease; }
+    .mobile-menu.open { transform: translateY(0); }
+    .mobile-menu button { background: none; border: none; color: white; font-family: 'Playfair Display', serif; font-size: 1.5rem; }
+    .mobile-menu .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; }
+
+    /* HERO */
+    .hero { position: relative; min-height: 100vh; width: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay1 { position: absolute; inset: 0; background: rgba(28, 25, 23, 0.4); mix-blend-mode: multiply; }
+    .hero-overlay2 { position: absolute; inset: 0; background: linear-gradient(to top, #1c1917, transparent, rgba(28, 25, 23, 0.3)); }
+    .hero-content { position: relative; z-index: 10; text-align: center; padding: 1rem; max-width: 64rem; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+    .hero-location { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .hero-location-line { height: 1px; width: 3rem; background: rgba(255,255,255,0.6); }
+    .hero-location span { color: rgba(255,255,255,0.9); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3em; font-weight: 300; }
+    @media (min-width: 768px) { .hero-location span { font-size: 0.875rem; } }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; color: white; line-height: 1.1; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    @media (min-width: 768px) { .hero h1 { font-size: 6rem; } }
+    .hero h1 span { font-style: italic; font-weight: 300; }
+    .hero-desc { color: #e7e5e4; font-size: 1rem; font-weight: 300; max-width: 32rem; line-height: 1.7; margin-top: 1rem; margin-bottom: 2rem; }
+    @media (min-width: 768px) { .hero-desc { font-size: 1.25rem; } }
+    .hero-buttons { display: flex; flex-direction: column; gap: 1.5rem; }
+    @media (min-width: 768px) { .hero-buttons { flex-direction: row; } }
+    .btn-tour { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); color: white; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; font-weight: 700; transition: all 0.3s; }
+    .btn-tour:hover { background: white; color: #1c1917; }
+    .btn-reservar { padding: 1rem 2rem; background: #022c22; color: white; border: 1px solid #022c22; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; font-weight: 700; transition: all 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+    .btn-reservar:hover { background: #064e3b; }
+    .hero-scroll { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.5); }
+    .hero-scroll div { width: 1px; height: 4rem; background: linear-gradient(to bottom, transparent, white, transparent); }
+
+    /* TOUR 360 - CORREGIDO */
+    .tour-section { padding: 4rem 0; background: #1c1917; color: #f5f5f4; position: relative; overflow: hidden; }
+    @media (min-width: 768px) { .tour-section { padding: 6rem 0; } }
+    .tour-inner { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 10; }
+    .tour-header { display: flex; flex-direction: column; justify-content: space-between; align-items: center; margin-bottom: 3rem; gap: 1.5rem; text-align: center; }
+    @media (min-width: 768px) { .tour-header { flex-direction: row; align-items: flex-end; text-align: left; } }
+    .tour-header span { color: #10b981; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; display: block; }
+    .tour-header h2 { font-family: 'Playfair Display', serif; font-size: 1.875rem; }
+    @media (min-width: 768px) { .tour-header h2 { font-size: 3rem; } }
+    .tour-header p { color: #a8a29e; max-width: 28rem; font-size: 0.875rem; line-height: 1.7; }
     
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    /* AQUÍ ESTABA EL ERROR: HEMOS INVERTIDO LAS PROPORCIONES */
+    .tour-preview { 
+        width: 100%; 
+        aspect-ratio: 4/5; /* CELULAR: Formato Vertical (Alto) */
+        background: #292524; 
+        border: 1px solid rgba(255,255,255,0.05); 
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); 
+        position: relative; 
+        overflow: hidden; 
+        border-radius: 0.75rem; 
+    }
+    @media (min-width: 768px) { 
+        .tour-preview { aspect-ratio: 16/9; } /* PC: Formato Panorámico (Ancho) */
+    }
+
+    .tour-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(to bottom right, #292524, #1c1917); }
+    .tour-placeholder-icon { width: 5rem; height: 5rem; margin-bottom: 1rem; background: rgba(16,185,129,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .tour-placeholder span { font-family: monospace; font-size: 0.75rem; color: #78716c; }
+    .tour-gradient { position: absolute; top: 0; right: 0; width: 33%; height: 100%; background: linear-gradient(to left, rgba(6,78,59,0.1), transparent); pointer-events: none; }
+
+    /* EXPERIENCIA GALLERY */
+    .experiencia-section { background: #f5f5f4; padding: 4rem 0; }
+    @media (min-width: 768px) { .experiencia-section { padding: 6rem 0; } }
+    .experiencia-header { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; margin-bottom: 2.5rem; text-align: center; }
+    @media (min-width: 768px) { .experiencia-header { margin-bottom: 4rem; } }
+    .experiencia-header h2 { font-family: 'Playfair Display', serif; font-size: 1.875rem; color: #1c1917; margin-bottom: 1rem; }
+    @media (min-width: 768px) { .experiencia-header h2 { font-size: 2.25rem; } }
+    .experiencia-header .divider { width: 6rem; height: 1px; background: #022c22; margin: 0 auto; opacity: 0.2; }
+    .gallery-container { position: relative; width: 100%; height: 50vh; background: #e7e5e4; overflow: hidden; }
+    @media (min-width: 768px) { .gallery-container { height: 70vh; } }
+    .gallery-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
+    .gallery-slide.active { opacity: 1; }
+    .gallery-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-slide-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+    .gallery-slide-content { position: absolute; bottom: 0; left: 0; padding: 1.5rem; color: white; }
+    @media (min-width: 768px) { .gallery-slide-content { padding: 6rem; } }
+    .gallery-slide-content p { text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.625rem; margin-bottom: 0.25rem; opacity: 0.8; }
+    @media (min-width: 768px) { .gallery-slide-content p { font-size: 0.875rem; margin-bottom: 0.5rem; } }
+    .gallery-slide-content h3 { font-family: 'Playfair Display', serif; font-size: 1.875rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    @media (min-width: 768px) { .gallery-slide-content h3 { font-size: 4.5rem; } }
+    .gallery-dots { position: absolute; bottom: 2rem; right: 2rem; display: flex; gap: 0.5rem; z-index: 10; }
+    .gallery-dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: rgba(255,255,255,0.4); border: none; transition: all 0.3s; }
+    .gallery-dot:hover { background: rgba(255,255,255,0.6); }
+    .gallery-dot.active { background: white; width: 2rem; }
+
+    /* COMODIDADES */
+    .comodidades-section { padding: 4rem 0; max-width: 80rem; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+    @media (min-width: 768px) { .comodidades-section { padding-top: 6rem; padding-bottom: 6rem; } }
+    .comodidades-grid { display: grid; gap: 2.5rem; align-items: center; }
+    @media (min-width: 768px) { .comodidades-grid { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+    .comodidades-text { text-align: center; }
+    @media (min-width: 768px) { .comodidades-text { text-align: left; } }
+    .comodidades-text span { color: rgba(6,78,59,0.6); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; font-weight: 700; margin-bottom: 1rem; display: block; }
+    .comodidades-text h2 { font-family: 'Playfair Display', serif; font-size: 1.875rem; color: #1c1917; margin-bottom: 1.5rem; line-height: 1.2; }
+    @media (min-width: 768px) { .comodidades-text h2 { font-size: 3rem; margin-bottom: 2rem; } }
+    .comodidades-text h2 span { font-style: italic; color: #065f46; }
+    .comodidades-text p { color: #78716c; margin-bottom: 1.5rem; font-size: 1rem; font-weight: 300; line-height: 1.7; }
+    @media (min-width: 768px) { .comodidades-text p { font-size: 1.125rem; margin-bottom: 2rem; } }
+    .btn-ver-mas { background: none; border: none; border-bottom: 1px solid #022c22; padding-bottom: 0.25rem; color: #022c22; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; transition: opacity 0.3s; text-align: left; }
+    .btn-ver-mas:hover { opacity: 0.7; }
+    .extra-amenities { margin-top: 1.5rem; background: white; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #e7e5e4; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: none; }
+    .extra-amenities.show { display: block; animation: fadeIn 0.4s ease; }
+    .extra-amenities p { display: flex; align-items: center; gap: 0.5rem; color: #57534e; margin-bottom: 0.75rem; }
+    .extra-amenities p:last-child { margin-bottom: 0; }
+    .amenities-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+    @media (min-width: 768px) { .amenities-cards { gap: 1rem; } }
+    .amenity-card { padding: 1.25rem; background: white; border: 1px solid #f5f5f4; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border-radius: 0.75rem; transition: all 0.3s; }
+    @media (min-width: 768px) { .amenity-card { padding: 2rem; } }
+    .amenity-card:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); transform: translateY(-4px); }
+    .amenity-card .icon { color: #022c22; margin-bottom: 0.75rem; transition: transform 0.3s; }
+    @media (min-width: 768px) { .amenity-card .icon { margin-bottom: 1rem; } }
+    .amenity-card:hover .icon { transform: scale(1.1); }
+    .amenity-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: #1c1917; margin-bottom: 0.25rem; }
+    @media (min-width: 768px) { .amenity-card h4 { font-size: 1.125rem; margin-bottom: 0.5rem; } }
+    .amenity-card p { color: #a8a29e; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    @media (min-width: 768px) { .amenity-card p { font-size: 0.75rem; } }
+
+    /* RESERVAR SECTION */
+    .reservar-section { padding: 4rem 0; position: relative; overflow: hidden; background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #065f46 100%); }
+    @media (min-width: 768px) { .reservar-section { padding: 6rem 0; } }
+    .reservar-pattern { position: absolute; inset: 0; opacity: 0.05; background-image: url('https://www.transparenttextures.com/patterns/cubes.png'); }
+    .reservar-blob1 { position: absolute; top: 0; left: 25%; width: 300px; height: 300px; background: #34d399; border-radius: 50%; filter: blur(100px); opacity: 0.1; transform: translateY(-50%); }
+    @media (min-width: 768px) { .reservar-blob1 { width: 600px; height: 600px; filter: blur(150px); } }
+    .reservar-blob2 { position: absolute; bottom: 0; right: 25%; width: 200px; height: 200px; background: #5eead4; border-radius: 50%; filter: blur(80px); opacity: 0.1; transform: translateY(50%); }
+    @media (min-width: 768px) { .reservar-blob2 { width: 400px; height: 400px; filter: blur(100px); } }
+    .reservar-inner { max-width: 80rem; margin: 0 auto; padding: 0 1rem; position: relative; z-index: 10; }
+    @media (min-width: 768px) { .reservar-inner { padding: 0 1.5rem; } }
+    .reservar-header { text-align: center; margin-bottom: 2.5rem; }
+    @media (min-width: 768px) { .reservar-header { margin-bottom: 4rem; } }
+    .reservar-header span { color: #6ee7b7; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.625rem; font-weight: 700; margin-bottom: 0.75rem; display: block; }
+    @media (min-width: 768px) { .reservar-header span { font-size: 0.75rem; margin-bottom: 1rem; } }
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            beige: '#ede8db',
-                            olive: '#96872f',
-                            pink: '#feb1f4',
-                            dark: '#506033',
-                            green: '#2d5016',
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['"DM Serif Display"', 'serif'],
-                        sans: ['Quicksand', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    .reservar-header h2 { 
+      font-family: 'Playfair Display', serif; 
+      font-size: 1.875rem; 
+      color: white; 
+      margin-bottom: 1rem; 
+    }
+    
+    @media (min-width: 768px) { .reservar-header h2 { font-size: 3.75rem; margin-bottom: 1.5rem; } }
+    .reservar-header p { color: rgba(167,243,208,0.6); font-weight: 300; max-width: 36rem; margin: 0 auto; font-size: 0.875rem; padding: 0 1rem; }
+    @media (min-width: 768px) { .reservar-header p { font-size: 1rem; } }
 
-    <style>
-        html { scroll-behavior: smooth; }
-        
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background-color: #ede8db;
-            color: #506033;
-        }
+    /* Plan Cards - DISEÑO MEJORADO */
+    .plan-cards { display: flex; flex-direction: row; gap: 0.75rem; }
+    @media (min-width: 768px) { .plan-cards { gap: 1.5rem; } }
+    
+    .plan-card { flex: 1; position: relative; overflow: hidden; border-radius: 1rem; cursor: pointer; transition: all 0.5s; border: 2px solid transparent; }
+    .plan-card:hover { transform: scale(1.02); }
+    .plan-card.selected { border-color: #6ee7b7; box-shadow: 0 0 0 2px #022c22, 0 0 0 4px #6ee7b7; }
+    @media (min-width: 768px) { .plan-card.selected { box-shadow: 0 0 0 4px #022c22, 0 0 0 8px #6ee7b7; } }
+    
+    .plan-card-bg { position: absolute; inset: 0; background: linear-gradient(to bottom right, rgba(255,255,255,0.1), rgba(16,185,129,0.05), rgba(20,184,166,0.1)); backdrop-filter: blur(16px); border-radius: 1rem; }
+    .plan-card-bg2 { position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,78,59,0.2), transparent); border-radius: 1rem; }
+    .plan-card-border { position: absolute; inset: 1px; border-radius: 1rem; background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%); border: 1px solid rgba(255,255,255,0.1); }
+    
+    /* CONTENIDO COMPACTO PARA MÓVIL */
+    .plan-card-content { 
+      position: relative; 
+      padding: 1rem; 
+      text-align: left; 
+      min-height: 140px; 
+    }
+    
+    /* ICONO SOL/LUNA FLOTANDO A LA DERECHA */
+    .plan-card-icon { 
+      position: absolute; 
+      top: 0.75rem; 
+      right: 0.75rem; 
+      width: 2rem; height: 2rem; 
+      border-radius: 0.5rem; 
+      background: linear-gradient(to bottom right, rgba(52,211,153,0.2), rgba(20,184,166,0.2)); 
+      backdrop-filter: blur(4px); 
+      border: 1px solid rgba(255,255,255,0.1); 
+      display: flex; align-items: center; justify-content: center; 
+      margin-bottom: 0; 
+    }
+    
+    /* TÍTULOS Y TEXTOS */
+    .plan-card h3 { 
+      font-family: 'Playfair Display', serif; 
+      font-size: 1rem; 
+      color: white; 
+      margin-bottom: 0.25rem; 
+      padding-right: 2.5rem; /* Espacio para el icono */
+      line-height: 1.1;
+    }
+    
+    .plan-card .desc { 
+      color: rgba(167,243,208,0.7); 
+      font-size: 0.6rem; 
+      margin-bottom: 0.5rem; 
+      padding-right: 1rem;
+      line-height: 1.2;
+    }
+    
+    /* PRECIO */
+    .plan-card .price { display: flex; align-items: baseline; gap: 0.2rem; }
+    .plan-card .price-amount { font-size: 1.25rem; font-weight: 700; color: white; }
+    .plan-card .price-unit { font-size: 0.6rem; color: rgba(167,243,208,0.5); }
+    
+    /* CARACTERÍSTICAS */
+    .plan-card .features { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .plan-card .features ul { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; }
+    .plan-card .features li { display: flex; align-items: center; gap: 0.25rem; font-size: 0.6rem; color: rgba(167,243,208,0.7); line-height: 1.1; }
+    .plan-card .check-icon { color: #34d399; flex-shrink: 0; width: 0.75rem; height: 0.75rem; }
+    
+    /* CHECK DE SELECCIÓN (ABAJO DERECHA) */
+    .plan-card .selected-check { 
+      position: absolute; bottom: 0.5rem; right: 0.5rem; 
+      width: 1.25rem; height: 1.25rem; 
+      border-radius: 50%; background: #34d399; 
+      display: none; align-items: center; justify-content: center; 
+    }
+    .plan-card.selected .selected-check { display: flex; }
+    
+    /* ANIMACIÓN LATIDO PARA ESTADÍA (Ahora es la importante) */
+    #card-stay {
+      animation: cardBreath 4s ease-in-out infinite; 
+      z-index: 10; 
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+    #card-stay:hover {
+      animation-play-state: paused;
+      transform: scale(1.03);
+      border-color: #34d399;
+    }
 
-        ::selection {
-            background-color: #feb1f4;
-            color: #506033;
-        }
+    .plan-card-stay .plan-card-content { padding-top: 1rem; } /* Reset para móvil */
 
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 
-                0 8px 32px rgba(80, 96, 51, 0.08),
-                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-        }
+    /* === RESTAURAR DISEÑO GRANDE PARA PC (ESCRITORIO) === */
+    @media (min-width: 768px) { 
+      .plan-card-content { padding: 2.5rem; text-align: left; display: block; }
+      .plan-card-icon { position: relative; top: auto; right: auto; width: 3.5rem; height: 3.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+      .plan-card h3 { font-size: 1.875rem; margin-bottom: 0.5rem; padding-right: 0; }
+      .plan-card .desc { font-size: 0.875rem; margin-bottom: 1.5rem; padding-right: 0; }
+      .plan-card .price { gap: 0.5rem; }
+      .plan-card .price-amount { font-size: 2.25rem; }
+      .plan-card .price-unit { font-size: 0.875rem; }
+      .plan-card .features { margin-top: 1.5rem; padding-top: 1.5rem; }
+      .plan-card .features ul { gap: 0.5rem; }
+      .plan-card .features li { gap: 0.5rem; font-size: 0.875rem; }
+      .plan-card .check-icon { width: 1rem; height: 1rem; }
+      .plan-card .selected-check { top: 1rem; right: 1rem; bottom: auto; width: 2rem; height: 2rem; }
+      
+      .plan-card-stay .plan-card-content { padding-top: 3.5rem; }
+    }
 
-        .glass-card-solid {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 
-                0 12px 48px rgba(80, 96, 51, 0.12),
-                0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-        }
+    /* Booking Form */
+    .booking-form { margin-top: 2rem; background: rgba(255,255,255,0.05); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.75rem; overflow: hidden; display: none; scroll-margin-top: 6rem; }
+    @media (min-width: 768px) { .booking-form { margin-top: 3rem; } }
+    .booking-form.show { display: block; animation: fadeIn 0.5s ease; }
+    .booking-form-header { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    @media (min-width: 768px) { .booking-form-header { padding: 1.5rem 2rem; } }
+    .booking-form-header span { color: #6ee7b7; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.25rem; display: block; }
+    @media (min-width: 768px) { .booking-form-header span { font-size: 0.75rem; } }
+    .booking-form-header h3 { font-family: 'Playfair Display', serif; font-size: 1.125rem; color: white; }
+    @media (min-width: 768px) { .booking-form-header h3 { font-size: 1.25rem; } }
+    .step-dots { display: flex; align-items: center; gap: 0.375rem; }
+    @media (min-width: 768px) { .step-dots { gap: 0.5rem; } }
+    .step-dot { width: 0.375rem; height: 0.375rem; border-radius: 9999px; background: rgba(255,255,255,0.2); transition: all 0.3s; }
+    @media (min-width: 768px) { .step-dot { width: 0.5rem; height: 0.5rem; } }
+    .step-dot.active { background: #34d399; width: 1rem; }
+    @media (min-width: 768px) { .step-dot.active { width: 1.5rem; } }
+    .step-dot.completed { background: rgba(52,211,153,0.5); }
+    .booking-form-content { padding: 1rem; }
+    @media (min-width: 768px) { .booking-form-content { padding: 2rem; } }
+    .step-content { display: none; animation: fadeIn 0.4s ease; }
+    .step-content.active { display: block; }
 
-        .glass-navbar {
-            background: rgba(45, 80, 22, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-        }
+    /* Step 1: Guests */
+    .guests-step { text-align: center; }
+    .guests-controls { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+    @media (min-width: 768px) { .guests-controls { gap: 2rem; } }
+    .guest-btn { width: 3rem; height: 3rem; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+    @media (min-width: 768px) { .guest-btn { width: 3.5rem; height: 3.5rem; } }
+    .guest-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+    .guest-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .guests-count { font-size: 3rem; font-weight: 300; color: white; width: 5rem; text-align: center; }
+    @media (min-width: 768px) { .guests-count { font-size: 3.75rem; width: 6rem; } }
+    .guests-info { color: rgba(167,243,208,0.6); font-size: 0.875rem; margin-bottom: 0.5rem; }
+    .guests-info strong { color: white; font-weight: 500; }
+    .guests-help { color: rgba(167,243,208,0.4); font-size: 0.75rem; }
+    .guests-help a { color: #6ee7b7; text-decoration: underline; }
+    .guests-help a:hover { color: #a7f3d0; }
 
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(80, 96, 51, 0.2), transparent);
-        }
+    /* Step 2: Calendar */
+    .calendar-step p { color: rgba(167,243,208,0.6); font-size: 0.75rem; margin-bottom: 1rem; text-align: center; }
+    @media (min-width: 768px) { .calendar-step p { font-size: 0.875rem; margin-bottom: 1.5rem; } }
+    .calendar { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem; max-width: 28rem; margin: 0 auto; }
+    @media (min-width: 768px) { .calendar { padding: 1.5rem; } }
+    .calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+    @media (min-width: 768px) { .calendar-header { margin-bottom: 1rem; } }
+    .calendar-header h4 { font-weight: 500; color: white; font-size: 0.875rem; }
+    @media (min-width: 768px) { .calendar-header h4 { font-size: 1rem; } }
+    .calendar-nav { display: flex; gap: 0.25rem; }
+    .calendar-nav button { padding: 0.375rem; background: transparent; border: none; color: white; border-radius: 0.25rem; transition: background 0.3s; display: flex; align-items: center; justify-content: center; }
+    @media (min-width: 768px) { .calendar-nav button { padding: 0.5rem; } }
+    .calendar-nav button:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+    .calendar-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+    .calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.125rem; text-align: center; margin-bottom: 0.5rem; }
+    @media (min-width: 768px) { .calendar-weekdays { gap: 0.25rem; } }
+    .calendar-weekdays span { font-size: 0.625rem; font-weight: 500; color: rgba(167,243,208,0.5); padding: 0.375rem 0; }
+    @media (min-width: 768px) { .calendar-weekdays span { font-size: 0.75rem; padding: 0.5rem 0; } }
+    .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.125rem; }
+    @media (min-width: 768px) { .calendar-days { gap: 0.25rem; } }
+    .calendar-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; border-radius: 0.25rem; background: transparent; border: none; color: white; transition: all 0.2s; cursor: pointer; }
+    @media (min-width: 768px) { .calendar-day { font-size: 0.875rem; } }
+    .calendar-day:hover:not(:disabled):not(.selected):not(.in-range) { background: rgba(255,255,255,0.1); }
+    .calendar-day:disabled { color: rgba(255,255,255,0.2); cursor: not-allowed; }
+    .calendar-day.selected { background: #10b981; color: white; font-weight: 500; }
+    .calendar-day.in-range { background: rgba(16,185,129,0.3); color: #a7f3d0; }
+    .date-summary { margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(16,185,129,0.1); border: 1px solid rgba(52,211,153,0.2); border-radius: 0.5rem; max-width: 28rem; margin-left: auto; margin-right: auto; display: none; animation: fadeIn 0.3s ease; }
+    @media (min-width: 768px) { .date-summary { margin-top: 1.5rem; padding: 1rem 1.25rem; } }
+    .date-summary.show { display: block; }
+    .date-summary-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; }
+    @media (min-width: 768px) { .date-summary-row { font-size: 0.875rem; } }
+    .date-summary-col label { font-size: 0.625rem; color: rgba(167,243,208,0.6); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem; display: block; }
+    @media (min-width: 768px) { .date-summary-col label { font-size: 0.75rem; } }
+    .date-summary-col span { font-weight: 500; color: white; }
+    .date-summary-arrow { color: rgba(110,231,183,0.5); }
+    .date-summary-total { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(52,211,153,0.2); font-size: 0.75rem; color: #6ee7b7; font-weight: 500; }
+    @media (min-width: 768px) { .date-summary-total { margin-top: 0.75rem; padding-top: 0.75rem; font-size: 0.875rem; } }
 
-        /* Animations */
-        @keyframes scroll-rtl {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+    /* Step 3: Contact */
+    .contact-step { max-width: 28rem; margin: 0 auto; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.75rem; font-weight: 500; color: rgba(167,243,208,0.6); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: white; font-size: 1rem; outline: none; transition: border-color 0.3s; }
+    .form-group input::placeholder { color: rgba(255,255,255,0.3); }
+    .form-group input:focus, .form-group select:focus { border-color: #34d399; }
+    .form-group input.error { border-color: #f87171; }
+    .form-error { font-size: 0.75rem; color: #f87171; margin-top: 0.25rem; }
+    .phone-input { display: flex; }
+    .phone-prefix { padding: 0.75rem 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); border-right: none; border-radius: 0.5rem 0 0 0.5rem; color: rgba(255,255,255,0.6); font-size: 0.875rem; display: flex; align-items: center; }
+    .phone-input input { border-radius: 0 0.5rem 0.5rem 0; }
+    .birthday-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    .form-group select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1rem; }
+    .form-group select option { background: #022c22; }
 
-        @keyframes scroll-reviews {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+    /* Step 4: Confirmation */
+    .confirm-step { max-width: 28rem; margin: 0 auto; }
+    .confirm-summary { background: rgba(16,185,129,0.1); border: 1px solid rgba(52,211,153,0.2); border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .confirm-summary h4 { font-weight: 500; color: white; margin-bottom: 1rem; text-align: center; }
+    .confirm-row { display: flex; justify-content: space-between; font-size: 0.875rem; padding: 0.5rem 0; }
+    .confirm-row .label { color: rgba(167,243,208,0.6); }
+    .confirm-row .value { font-weight: 500; color: white; }
+    .confirm-total { padding-top: 1rem; margin-top: 1rem; border-top: 1px solid rgba(52,211,153,0.2); display: flex; justify-content: space-between; align-items: baseline; }
+    .confirm-total .label { color: rgba(167,243,208,0.6); }
+    .confirm-total .value { font-size: 1.5rem; font-weight: 700; color: #6ee7b7; }
+    .checkbox-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    @media (min-width: 768px) { .checkbox-group { gap: 0.75rem; } }
+    .checkbox-label { display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; font-size: 0.75rem; color: rgba(167,243,208,0.6); transition: color 0.3s; }
+    @media (min-width: 768px) { .checkbox-label { gap: 0.75rem; font-size: 0.875rem; } }
+    .checkbox-label:hover { color: rgba(167,243,208,0.8); }
+    .checkbox-label input { display: none; }
+    .checkbox-box { width: 1rem; height: 1rem; border: 2px solid rgba(255,255,255,0.3); border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.125rem; transition: all 0.3s; }
+    @media (min-width: 768px) { .checkbox-box { width: 1.25rem; height: 1.25rem; } }
+    .checkbox-label input:checked + .checkbox-box { background: #34d399; border-color: #34d399; }
+    .checkbox-box svg { display: none; width: 0.625rem; height: 0.625rem; color: #022c22; }
+    @media (min-width: 768px) { .checkbox-box svg { width: 0.75rem; height: 0.75rem; } }
+    .checkbox-label input:checked + .checkbox-box svg { display: block; }
+    .checkbox-label a { color: #6ee7b7; text-decoration: underline; }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    /* Success */
+    .success-step { text-align: center; padding: 4rem 0; }
+    .success-icon { width: 6rem; height: 6rem; margin: 0 auto 2rem; border-radius: 50%; background: rgba(16,185,129,0.2); backdrop-filter: blur(4px); border: 1px solid rgba(52,211,153,0.3); display: flex; align-items: center; justify-content: center; }
+    .success-step h3 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 2.25rem; color: white; margin-bottom: 1rem; }
+    .success-step p { color: rgba(167,243,208,0.7); margin-bottom: 2rem; line-height: 1.7; }
+    .btn-nueva-reserva { padding: 1rem 2rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; transition: background 0.3s; cursor: pointer; }
+    .btn-nueva-reserva:hover { background: rgba(255,255,255,0.2); }
 
-        @keyframes rotate360 {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+    /* Booking Nav */
+    .booking-nav { padding: 1rem; display: flex; gap: 0.5rem; max-width: 28rem; margin: 0 auto; }
+    @media (min-width: 768px) { .booking-nav { padding: 1.5rem 2rem; gap: 0.75rem; } }
+    .btn-back { flex: 1; padding: 0.75rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.625rem; display: none; align-items: center; justify-content: center; gap: 0.375rem; border-radius: 0.5rem; transition: background 0.3s; }
+    @media (min-width: 768px) { .btn-back { padding: 1rem 1.5rem; font-size: 0.75rem; gap: 0.5rem; } }
+    .btn-back.show { display: flex; }
+    .btn-back:hover { background: rgba(255,255,255,0.1); }
+    .btn-next { flex: 1; padding: 0.75rem 1rem; background: #10b981; border: none; color: #022c22; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.625rem; display: flex; align-items: center; justify-content: center; gap: 0.375rem; border-radius: 0.5rem; transition: all 0.3s; }
+    @media (min-width: 768px) { .btn-next { padding: 1rem 1.5rem; font-size: 0.75rem; gap: 0.5rem; } }
+    .btn-next:hover:not(:disabled) { background: #34d399; }
+    .btn-next:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    /* MENSAJE "SELECCIONA PLAN" */
+    .no-plan-msg { 
+      text-align: center; 
+      color: #a7f3d0; 
+      font-size: 1.05rem; 
+      margin-top: 2rem; 
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+    @media (min-width: 768px) { 
+      .no-plan-msg { font-size: 1.4rem; } 
+    }
 
-        .animate-scroll-rtl {
-            animation: scroll-rtl 40s linear infinite;
-        }
-/* FIX: Pausar SOLO en PC (donde hay mouse). En celular seguirá moviéndose siempre. */
-        @media (hover: hover) {
-            .pause-on-hover:hover .animate-scroll-rtl {
-                animation-play-state: paused;
-            }
-        }
-        .animate-scroll-reviews {
-            animation: scroll-reviews 35s linear infinite;
-        }
+    /* UBICACION - DISEÑO ALTO IMPACTO */
+    .ubicacion-section {
+      padding: 8rem 0; 
+      position: relative;
+      background-image: url('img-ubicacion.jpeg'); 
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      overflow: hidden;
+    }
+    
+    .ubicacion-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(2, 44, 34, 0.95), rgba(6, 78, 59, 0.8));
+      z-index: 1;
+    }
 
-        .animate-fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
+    .ubicacion-inner {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: grid;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+    @media (min-width: 768px) { .ubicacion-inner { grid-template-columns: 1fr 1fr; } }
 
-        .animate-rotate {
-            animation: rotate360 8s linear infinite;
-        }
+    .ubicacion-map { order: 2; perspective: 1000px; }
+    @media (min-width: 768px) { .ubicacion-map { order: 1; } }
 
-        .animation-delay-100 { animation-delay: 0.1s; }
-        .animation-delay-200 { animation-delay: 0.2s; }
-        .animation-delay-300 { animation-delay: 0.3s; }
-        .animation-delay-400 { animation-delay: 0.4s; }
+    .ubicacion-map-container {
+      width: 100%;
+      height: 450px;
+      background: #292524;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      transform: rotateY(5deg);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    @media (min-width: 768px) {
+      .ubicacion-map-container:hover { 
+        transform: rotateY(0deg) scale(1.02);
+        box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+      }
+    }
 
-        /* Hover Effects */
-        .hover-lift {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .hover-lift:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(80, 96, 51, 0.15);
-        }
+    .ubicacion-map-container iframe {
+      width: 100%; height: 100%; border: 0;
+      filter: grayscale(100%) invert(10%) contrast(80%);
+    }
+    
+    .ubicacion-map-pin {
+      position: absolute; top: 1rem; right: 1rem;
+      background: white; padding: 0.75rem; border-radius: 50%;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      color: #022c22; z-index: 10;
+      animation: bounce 2s infinite;
+    }
 
-        .hover-scale {
-            transition: transform 0.3s ease;
-        }
-        .hover-scale:hover {
-            transform: scale(1.05);
-        }
+    .ubicacion-text { order: 1; text-align: center; }
+    @media (min-width: 768px) { .ubicacion-text { order: 2; text-align: left; padding-left: 2rem; } }
 
-        /* Button Gradients */
-        .btn-primary {
-            background: linear-gradient(135deg, #96872f 0%, #2d5016 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(150, 135, 47, 0.3);
-        }
+    .ubicacion-text span {
+      color: #6ee7b7;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 100px;
+      backdrop-filter: blur(4px);
+    }
 
-        .btn-whatsapp {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-whatsapp:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
-        }
+    .ubicacion-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: white;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    @media (min-width: 768px) { .ubicacion-text h2 { font-size: 4rem; } }
 
-        /* Custom scrollbar hiding */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .ubicacion-text p {
+      color: #d1fae5;
+      font-size: 1.125rem;
+      font-weight: 300;
+      margin-bottom: 3rem;
+      line-height: 1.8;
+    }
 
-        /* Google Review Card */
-        .google-review-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
-        }
+    .btn-como-llegar {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: white;
+      color: #022c22;
+      padding: 1.25rem 2.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.875rem;
+      font-weight: 800;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+    .btn-como-llegar:hover {
+      background: #34d399;
+      color: #022c22;
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(52, 211, 153, 0.5);
+    }
 
-        /* Mobile menu */
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        .mobile-menu.open {
-            max-height: 300px;
-        }
+    /* FOOTER */
+    footer { background: #0c0a09; color: #d6d3d1; padding: 4rem 0; font-size: 0.875rem; font-weight: 300; border-top: 1px solid #292524; }
+    .footer-inner { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; display: grid; gap: 3rem; }
+    @media (min-width: 768px) { .footer-inner { grid-template-columns: 2fr 1fr 1fr; } }
+    .footer-brand h4 { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: white; margin-bottom: 1rem; }
+    .footer-brand p { max-width: 20rem; line-height: 1.7; color: #a8a29e; }
+    .footer-links h4 { color: white; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .footer-links button { background: none; border: none; color: #d6d3d1; transition: color 0.3s; text-align: left; }
+    .footer-links button:hover { color: #34d399; }
+    .footer-social { display: flex; gap: 1rem; }
+    .footer-social a { padding: 0.75rem; border: 1px solid #44403c; border-radius: 50%; color: white; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+    .footer-social a:hover { border-color: #10b981; color: #10b981; }
+    .footer-bottom { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #1c1917; display: flex; flex-direction: column; gap: 1rem; align-items: center; text-align: center; color: #78716c; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    @media (min-width: 768px) { .footer-bottom { flex-direction: row; justify-content: space-between; } }
 
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            }
-        /* Efecto de Respiración CIRCULAR para el botón de WhatsApp */
-        @keyframes breathe {
-            0%, 100% {
-                transform: scale(1);
-                /* El truco es añadir 'border-radius: 50%' aquí también */
-                border-radius: 50%;
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-            }
-            50% {
-                transform: scale(1.1);
-                /* Y aquí, para que la sombra se expanda en círculo */
-                border-radius: 50%;
-                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); /* Aumenté un poco el rango a 15px para que se note más suave */
-            }
-        }
-        
-        .animate-breathe {
-            animation: breathe 2s infinite ease-in-out;
-            /* Aseguramos que el contenedor base también sea redondo */
-            border-radius: 50%;
-        }
-
-        /* --- EFECTO LUCIÉRNAGA PREMIUM (Botón Siguiente) --- */
-        
-        /* 1. Definimos la animación de rotación suave */
-        @keyframes border-spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* 2. La clase base del botón */
-        .btn-firefly {
-            position: relative;
-            overflow: hidden; /* Mantiene la luz dentro de los bordes redondeados */
-            z-index: 1; /* Necesario para las capas */
-        }
-
-        /* 3. CAPA 1: El haz de luz giratorio (La "Luciérnaga") */
-        .btn-firefly::before {
-            content: '';
-            position: absolute;
-            z-index: -2; /* Se coloca detrás de todo */
-            /* Hacemos el gradiente mucho más grande que el botón para que al girar cubra las esquinas */
-            top: -100%; left: -100%; width: 300%; height: 300%;
-            
-            /* EL TRUCO: Un gradiente cónico tipo radar.
-               Usa tus colores: transparente la mayoría del tiempo, y un destello de 'brand-olive' al final */
-            background: conic-gradient(
-                transparent 0%, 
-                transparent 85%, 
-                #a3c459 95%,  /* Color de la luz (brand-olive claro) */
-                transparent 100%
-            );
-            
-            /* La animación: gira en 4 segundos de forma infinita y lineal */
-            animation: border-spin 4s linear infinite;
-        }
-
-        /* 4. CAPA 2: La máscara interna (Para que solo se vea el borde) */
-        .btn-firefly::after {
-            content: '';
-            position: absolute;
-            z-index: -1; /* Detrás del texto, delante de la luz */
-            /* 'inset: 2px' define el grosor del borde de luz (2 píxeles) */
-            inset: 2px; 
-            background-color: #2d5016; /* Debe ser del MISMO color que el fondo del botón (brand-dark) */
-            border-radius: inherit; /* Copia las esquinas redondeadas del botón padre */
-            transition: all 0.3s ease;
-        }
-
-        /* Opcional: Al pasar el mouse, la luz se vuelve un poco más intensa */
-        .btn-firefly:hover::before {
-             background: conic-gradient(
-                transparent 0%, 
-                transparent 80%, 
-                #d4e6a5 95%, /* Un verde más brillante al hacer hover */
-                transparent 100%
-            );
-        }
-
-        /* --- NUEVO LUXURY STYLE (Correcciones Finales) --- */
-        
-        /* 1. Arreglo del Gradiente (Para que sea infinito y suave) */
-        .text-gradient-flow {
-            background: linear-gradient(90deg, #96872f, #2d5016, #d4e6a5, #96872f);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-            animation: gradient-flow 5s linear infinite;
-        }
-
-        @keyframes gradient-flow {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        /* 2. Nueva Animación "Pulse Luxury" (Blanca y suave, reemplaza a la verde) */
-        @keyframes pulse-luxury {
-            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); transform: scale(1); }
-            70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); transform: scale(1.05); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); transform: scale(1); }
-        }
-
-        .animate-pulse-luxury {
-            animation: pulse-luxury 3s infinite ease-out;
-            border-radius: 9999px;
-        }
-
-        /* Clase para desvanecer el vidrio suavemente */
-        .fade-out {
-            opacity: 0;
-            pointer-events: none; /* Esto permite que los clics pasen al tour */
-            transition: opacity 0.8s ease-out;
-        }
-
-        /* --- CORRECCIÓN FINAL: DISEÑO HIELO --- */
-        
-        /* 1. Botón "Átomo de Hielo" (Más blanco para que se lean las letras) */
-        .glass-apple {
-            /* Blanco al 35% (Suficiente para contraste, pero translúcido) */
-            background: rgba(255, 255, 255, 0.35) !important; 
-            
-            /* Blur fuerte para efecto congelado */
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            
-            /* Borde blanco sólido */
-            border: 2px solid rgba(255, 255, 255, 0.8) !important;
-            
-            /* Sombra blanca suave */
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-        }
-
-        /* 2. Cortina del Tour (Más transparente, casi invisible) */
-        /* Esto quita el fondo negro y deja solo un desenfoque muy leve */
-        .tour-curtain-clean {
-            background-color: transparent !important; /* Cero color negro */
-            backdrop-filter: blur(2px); /* Solo un toquecito de desenfoque */
-        }
-
-        /* ... (tus estilos anteriores) ... */
-        
-        /* PEGA ESTO AQUÍ (Justo antes de que cierre style) */
-        
-        /* --- EFECTO "CINE" PARA EL VIDEO HERO --- */
-        #video-poster {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            overflow: hidden; z-index: 1; transition: opacity 1.5s ease-in-out;
-        }
-        .hero-poster-image {
-            width: 100%; height: 100%; object-fit: cover;
-            animation: ken-burns 20s infinite alternate ease-in-out;
-            transform-origin: center center;
-        }
-        @keyframes ken-burns {
-            0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.08) translate(-2%, 0); }
-        }
-        .video-loaded { opacity: 0; pointer-events: none; }
-        
-        /* --- ESTILOS NUEVOS PARA FOOTER Y UBICACIÓN --- */
-
-        /* Texto "Outline" para el logo gigante del footer */
-        .text-outline-opacity {
-            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1); /* Borde blanco sutil */
-            color: transparent;
-            font-family: 'DM Serif Display', serif;
-        }
-
-        /* Animación suave para el botón de Waze/Maps */
-        .hover-float {
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .hover-float:hover {
-            transform: translateY(-5px) scale(1.02);
-        }
-
-    </style> </head>
-    </style>
+    /* Icons (SVG placeholders) */
+    .icon { width: 1.25rem; height: 1.25rem; }
+    .icon-sm { width: 1rem; height: 1rem; }
+    .icon-md { width: 1.5rem; height: 1.5rem; }
+    .icon-lg { width: 2rem; height: 2rem; }
+  </style>
 </head>
-<body class="min-h-screen overflow-x-hidden">
+<body>
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#" id="logo" onclick="scrollToTop(event)">
+        <!-- LOGO V1 (Oscuro) - Para fondo blanco y Móviles -->
+        <img src="logo-oscuro.png" alt="Logo Cabaña Los Pelaitos" id="logo-v1" class="logo-img">
+        <!-- LOGO V2 (Blanco) - Para fondo transparente -->
+        <img src="logo-blanco.png" alt="Logo Cabaña Los Pelaitos" id="logo-v2" class="logo-img">
+      </a>
+      <div class="nav-links" id="nav-links">
+        <button onclick="scrollToSection('experiencia')">Experiencia</button>
+        <button onclick="scrollToSection('comodidades')">Espacios</button>
+        <button onclick="scrollToSection('reservar')">Reservar</button>
+        <button onclick="scrollToSection('ubicacion')">Ubicación</button>
+      </div>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="openMobileMenu()">
+        <svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
 
-    <!-- Navbar -->
-    <header id="main-header" class="fixed top-0 left-0 w-full z-50 font-serif transition-all duration-300">
-        
-        <div id="top-banner" class="w-full bg-gradient-to-r from-brand-olive via-[#7da140] to-brand-dark text-white text-sm py-2.5 relative overflow-hidden z-50 font-sans">
-            <div class="flex w-max animate-scroll-rtl whitespace-nowrap hover:[animation-play-state:paused] items-center">
-                
-                <div class="flex items-center mx-4">
-                    <span class="font-light tracking-widest text-white/90">ABIERTO TODOS LOS DÍAS: 9:00 AM - 6:00 PM</span>
-                    
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    
-                    <span class="font-light tracking-wide">Niños menores de 3 y Adultos mayores de 85 años <span class="font-medium text-brand-pink border-b border-brand-pink/40">GRATIS</span></span>
-                    
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    
-                    <span class="font-light tracking-wider">Sumérgete en nuestro recorrido 360°</span>
-                    
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    
-                    <span class="font-light italic tracking-widest opacity-80">¡Un plan que no te puedes perder!</span>
-                    
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                </div>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="close-btn" onclick="closeMobileMenu()">
+      <svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <button onclick="scrollToSection('experiencia'); closeMobileMenu();">Experiencia</button>
+    <button onclick="scrollToSection('comodidades'); closeMobileMenu();">Espacios</button>
+    <button onclick="scrollToSection('reservar'); closeMobileMenu();">Reservar</button>
+    <button onclick="scrollToSection('ubicacion'); closeMobileMenu();">Ubicación</button>
+  </div>
 
-                <div class="flex items-center mx-4">
-                    <span class="font-light tracking-widest text-white/90">ABIERTO TODOS LOS DÍAS: 9:00 AM - 6:00 PM</span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    <span class="font-light tracking-wide">Niños menores de 3 y Adultos mayores de 85 años <span class="font-medium text-brand-pink border-b border-brand-pink/40">GRATIS</span></span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    <span class="font-light tracking-wider">Sumérgete en nuestro recorrido 360°</span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    <span class="font-light italic tracking-widest opacity-80">¡Un plan que no te puedes perder!</span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                </div>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1768626416328-f4186499b0ed" alt="Cabaña Los Pelaitos">
+      <div class="hero-overlay1"></div>
+      <div class="hero-overlay2"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-location animate-fade-in-up">
+        <div class="hero-location-line"></div>
+        <span>Sabanagrande, Atlántico</span>
+        <div class="hero-location-line"></div>
+      </div>
+      <h1 class="animate-fade-in-up delay-1">Cabaña <br><span>Los Pelaitos</span></h1>
+      <p class="hero-desc animate-fade-in-up delay-2">Donde la naturaleza se encuentra con la exclusividad. Un santuario privado a solo 15 minutos de la ciudad.</p>
+      <div class="hero-buttons animate-fade-in-up delay-3">
+        <button class="btn-tour" onclick="scrollToSection('tour360')">
+          <span>Tour Virtual</span>
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+        </button>
+        <button class="btn-reservar" onclick="scrollToSection('reservar')">Reservar Ahora</button>
+      </div>
+    </div>
+    <div class="hero-scroll animate-bounce">
+      <div></div>
+    </div>
+  </header>
 
-                <div class="flex items-center mx-4">
-                    <span class="font-light tracking-widest text-white/90">ABIERTO TODOS LOS DÍAS: 9:00 AM - 6:00 PM</span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    <span class="font-light tracking-wide">Niños menores de 3 y Adultos mayores de 85 años <span class="font-medium text-brand-pink border-b border-brand-pink/40">GRATIS</span></span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    <span class="font-light tracking-wider">Sumérgete en nuestro recorrido 360°</span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    <span class="font-light italic tracking-widest opacity-80">¡Un plan que no te puedes perder!</span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                </div>
-                
-                <div class="flex items-center mx-4">
-                    <span class="font-light tracking-widest text-white/90">ABIERTO TODOS LOS DÍAS: 9:00 AM - 6:00 PM</span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    <span class="font-light tracking-wide">Niños menores de 3 y Adultos mayores de 85 años <span class="font-medium text-brand-pink border-b border-brand-pink/40">GRATIS</span></span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    <span class="font-light tracking-wider">Sumérgete en nuestro recorrido 360°</span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                    <span class="font-light italic tracking-widest opacity-80">¡Un plan que no te puedes perder!</span>
-                    <span class="mx-6 text-brand-pink text-xs align-middle">•</span>
-                </div>
+  <!-- TOUR 360 -->
+  <section class="tour-section noise-texture" id="tour360">
+    <div class="tour-inner">
+      <div class="tour-header">
+        <div>
+          <span>Inmersión Total</span>
+          <h2 class="font-serif">Explora cada rincón</h2>
+        </div>
+        <p>Recorre la propiedad desde tu dispositivo antes de llegar. Descubre la amplitud de nuestros espacios sociales y la privacidad de nuestras habitaciones.</p>
+      </div>
+      
+      <!-- CONTENEDOR DEL TOUR (Con el formato ajustado en CSS) -->
+      <div class="tour-preview">
+        <iframe 
+          src="https://tour.panoee.net/6968336a21ea03081285d865" 
+          width="100%" 
+          height="100%" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      
+    </div>
+    <div class="tour-gradient"></div>
+  </section>
 
+  <!-- EXPERIENCIA GALLERY -->
+  <section class="experiencia-section" id="experiencia">
+    <div class="experiencia-header">
+      <h2 class="font-serif">La Experiencia Los Pelaitos</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="gallery-container">
+      <div class="gallery-slide active" id="slide-0">
+        <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=1200&q=80" alt="Piscina">
+        <div class="gallery-slide-overlay"></div>
+        <div class="gallery-slide-content">
+          <p>Refresca tus sentidos</p>
+          <h3 class="font-serif">Piscina y Diversión</h3>
+        </div>
+      </div>
+      <div class="gallery-slide" id="slide-1">
+        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&q=80" alt="Hamacas">
+        <div class="gallery-slide-overlay"></div>
+        <div class="gallery-slide-content">
+          <p>Desconecta bajo la sombra</p>
+          <h3 class="font-serif">Descanso Natural</h3>
+        </div>
+      </div>
+      <div class="gallery-slide" id="slide-2">
+        <img src="https://ibb.co/VKpKsLN" alt="BBQ">
+        <div class="gallery-slide-overlay"></div>
+        <div class="gallery-slide-content">
+          <p>Deporte y risas</p>
+          <h3 class="font-serif">Momentos en Grupo</h3>
+        </div>
+      </div>
+      <div class="gallery-slide" id="slide-3">
+        <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=1200&q=80" alt="Bedroom">
+        <div class="gallery-slide-overlay"></div>
+        <div class="gallery-slide-content">
+          <p>Espacios amplios y acogedores</p>
+          <h3 class="font-serif">Confort para Todos</h3>
+        </div>
+      </div>
+      <div class="gallery-dots">
+        <button class="gallery-dot active" onclick="goToSlide(0)"></button>
+        <button class="gallery-dot" onclick="goToSlide(1)"></button>
+        <button class="gallery-dot" onclick="goToSlide(2)"></button>
+        <button class="gallery-dot" onclick="goToSlide(3)"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMODIDADES -->
+  <section class="comodidades-section" id="comodidades">
+    <div class="comodidades-grid">
+      <div class="comodidades-text">
+        <span>Detalles que importan</span>
+        <h2 class="font-serif">Diseñado para el <br><span>confort absoluto</span></h2>
+        <p>Cada elemento de Cabaña Los Pelaitos ha sido seleccionado para ofrecer una estadía sin preocupaciones. Desde la tecnología hasta el mobiliario, todo está pensado para ti.</p>
+        <button class="btn-ver-mas" id="btn-ver-mas" onclick="toggleAmenities()">Ver lista completa</button>
+        <div class="extra-amenities" id="extra-amenities">
+          <p><svg class="icon-sm" fill="none" stroke="#059669" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Zona de hamacas y relax</p>
+          <p><svg class="icon-sm" fill="none" stroke="#059669" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Juegos: Dominó, Jenga, Cartas</p>
+          <p><svg class="icon-sm" fill="none" stroke="#059669" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Parqueadero privado seguro</p>
+          <p><svg class="icon-sm" fill="none" stroke="#059669" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Cocina integral totalmente dotada</p>
+          <p><svg class="icon-sm" fill="none" stroke="#059669" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Kiosco social para eventos</p>
+          <p><svg class="icon-sm" fill="none" stroke="#059669" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Cancha de voleibol</p>
+        </div>
+      </div>
+      <div class="amenities-cards">
+        <div class="amenity-card">
+          <div class="icon">
+            <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          </div>
+          <h4 class="font-serif">Aire Acondicionado</h4>
+          <p>Climatización total</p>
+        </div>
+        <div class="amenity-card">
+          <div class="icon">
+            <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+          </div>
+          <h4 class="font-serif">Starlink WiFi</h4>
+          <p>Alta velocidad</p>
+        </div>
+        <div class="amenity-card">
+          <div class="icon">
+            <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>
+          </div>
+          <h4 class="font-serif">Piscina Privada</h4>
+          <p>Uso exclusivo</p>
+        </div>
+        <div class="amenity-card">
+          <div class="icon">
+            <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
+          </div>
+          <h4 class="font-serif">Zona BBQ</h4>
+          <p>Totalmente equipada</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVAR -->
+  <section class="reservar-section" id="reservar">
+    <div class="reservar-pattern"></div>
+    <div class="reservar-blob1"></div>
+    <div class="reservar-blob2"></div>
+    <div class="reservar-inner">
+      <div class="reservar-header">
+        <span>Tu Escapada Perfecta</span>
+        <h2 class="font-serif">Planes Exclusivos</h2>
+        <p>Selecciona la experiencia que mejor se adapte a tu grupo. Precios transparentes, sin sorpresas.</p>
+      </div>
+
+      <!-- Plan Cards -->
+      <div class="plan-cards">
+        <div class="plan-card" id="card-pass" onclick="selectPlan('pass')">
+          <div class="plan-card-bg"></div>
+          <div class="plan-card-bg2"></div>
+          <div class="plan-card-border"></div>
+          <div class="plan-card-content">
+            <div class="plan-card-icon">
+              <svg class="icon-md" fill="none" stroke="#6ee7b7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
             </div>
+            <h3 class="font-serif">Pasadía</h3>
+            <p class="desc">Día completo • 9AM - 5PM</p>
+            <div class="price">
+              <span class="price-amount">$50.000</span>
+              <span class="price-unit">/ persona</span>
+            </div>
+            <div class="features">
+              <ul>
+                <li><svg class="icon-sm check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Acceso total a zonas húmedas</li>
+                <li><svg class="icon-sm check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Zona BBQ y kiosco</li>
+              </ul>
+            </div>
+            <div class="selected-check">
+              <svg class="icon-sm" fill="none" stroke="#022c22" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
         </div>
 
-        <nav class="relative w-full bg-white/95 backdrop-blur-xl border-b border-white/20 shadow-lg transition-all duration-300">
-            <div class="container mx-auto px-4 md:px-8 py-3 flex items-center justify-between">
-                
-                <a href="#" class="flex-shrink-0 group">
-                    <img src="img/logo.png" alt="La Casa Voltiá" class="h-14 md:h-16 w-auto object-contain transition-transform duration-500 group-hover:scale-110">
-                </a>
+        <div class="plan-card plan-card-stay" id="card-stay" onclick="selectPlan('stay')">
+          <div class="plan-card-bg"></div>
+          <div class="plan-card-bg2"></div>
+          <div class="plan-card-border"></div>
+          <div class="plan-card-content">
+            <div class="plan-card-icon">
+              <svg class="icon-md" fill="none" stroke="#a7f3d0" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+            </div>
+            <h3 class="font-serif">Estadía Completa</h3>
+            <p class="desc">Experiencia definitiva • Día y noche</p>
+            <div class="price">
+              <span class="price-amount">$70.000</span>
+              <span class="price-unit">/ persona / noche</span>
+            </div>
+            <div class="features">
+              <ul>
+                <li><svg class="icon-sm check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Todo incluido del pasadía</li>
+                <li><svg class="icon-sm check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Habitaciones climatizadas</li>
+                <li><svg class="icon-sm check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> WiFi Starlink alta velocidad</li>
+              </ul>
+            </div>
+            <div class="selected-check">
+              <svg class="icon-sm" fill="none" stroke="#022c22" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                <ul class="hidden md:flex items-center space-x-8 text-lg font-medium text-brand-dark">
-                    <li><a href="#recorrido-360" class="hover:text-brand-olive transition-colors relative group py-2">Recorrido 360°</a></li>
-                    <li><a href="#experiencia" class="hover:text-brand-olive transition-colors relative group py-2">Experiencia</a></li>
-                    <li><a href="#gastronomia" class="hover:text-brand-olive transition-colors relative group py-2">Gastronomía</a></li>
-                    <li><a href="#galeria" class="hover:text-brand-olive transition-colors relative group py-2">Galería</a></li>
-                    <li><a href="#ubicacion" class="hover:text-brand-olive transition-colors relative group py-2">Ubicación</a></li>
-                </ul>
-
-                <div class="hidden md:flex items-center gap-4">
-                    <a href="#cotizador" class="bg-brand-dark text-white px-8 py-2.5 rounded-full font-bold shadow-lg transition-all duration-300 hover:bg-brand-olive hover:-translate-y-1">
-                        Reservar
-                    </a>
-                </div>
-
-                <button id="mobile-menu-btn" class="md:hidden text-brand-dark p-2 rounded-lg hover:bg-brand-beige/50 transition-colors">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      <!-- Booking Form -->
+      <div class="booking-form" id="booking-form">
+        <div class="booking-form-header">
+          <div>
+            <span id="step-label">Paso 1 de 4</span>
+            <h3 class="font-serif" id="step-title">Número de Invitados</h3>
+          </div>
+          <div class="step-dots">
+            <div class="step-dot active" id="dot-1"></div>
+            <div class="step-dot" id="dot-2"></div>
+            <div class="step-dot" id="dot-3"></div>
+            <div class="step-dot" id="dot-4"></div>
+          </div>
+        </div>
+        <div class="booking-form-content">
+          <!-- Step 1: Guests -->
+          <div class="step-content active" id="step-1">
+            <div class="guests-step">
+              <div class="guests-controls">
+                <button class="guest-btn" id="btn-minus" onclick="changeGuests(-1)">
+                  <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
                 </button>
+                <span class="guests-count" id="guests-count">2</span>
+                <button class="guest-btn" id="btn-plus" onclick="changeGuests(1)">
+                  <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                </button>
+              </div>
+              <p class="guests-info">Capacidad máxima de la cabaña: <strong>16 personas</strong>.</p>
+              <p class="guests-help">Para eventos con más de 16 personas, contáctanos vía <a href="https://wa.me/573001234567" target="_blank">WhatsApp</a>.</p>
             </div>
+          </div>
 
-            <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-t border-brand-beige shadow-2xl overflow-hidden">
-                <div class="p-6 flex flex-col gap-4">
-                    <a href="#recorrido-360" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Recorrido 360°</a>
-                    <a href="#experiencia" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Experiencia</a>
-                    <a href="#gastronomia" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Gastronomía</a>
-                    <a href="#galeria" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Galería</a>
-                    <a href="#ubicacion" class="text-xl font-serif text-brand-dark hover:text-brand-olive border-b border-gray-100 pb-2 mobile-link">Ubicación</a>
-                    <a href="#cotizador" class="mt-4 w-full bg-brand-dark text-white text-center py-4 rounded-xl font-bold text-lg shadow-md mobile-link">¡Reservar Ahora!</a>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center pt-36 pb-18 px-4 overflow-hidden">
-        <div class="absolute inset-0 z-0 overflow-hidden">
-            
-            <div class="absolute inset-0 bg-black/30 z-20"></div>
-
-            <video autoplay loop muted playsinline id="hero-video" class="absolute inset-0 w-full h-full object-cover z-0" oncanplaythrough="hidePoster()">
-                <source src="mp4/video-hero.mp4" type="video/mp4">
-            </video>
-
-            <div id="video-poster">
-                <img src="img/poster-hero.jpg" alt="Portada Hero" class="hero-poster-image">
-            </div>
-
-            </div>
-
-        <div class="container mx-auto grid md:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 md:pl-8 lg:pl-16">
-            <!-- Hero Text -->
-            <div class="text-center md:text-left space-y-6 md:pl-4 lg:pl-8 relative z-10">
-                
-                <div class="inline-block px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/30 font-bold text-xs tracking-[0.2em] uppercase text-white shadow-lg animate-fade-in-up">
-                    Turismo en el Caribe
-                </div>
-                
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif leading-[0.9] text-white drop-shadow-lg animate-fade-in-up animation-delay-100">
-                    Todo está <br>
-                    <span class="text-[#ede8db] italic relative">
-                        al revés
-                        <svg class="absolute -bottom-2 left-0 w-full h-3 text-brand-pink opacity-80" viewBox="0 0 100 10" preserveAspectRatio="none">
-                            <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="2" fill="none" />
-                        </svg>
-                    </span>
-                </h1>
-                
-                <p class="text-xl text-gray-100 max-w-lg mx-auto md:mx-0 leading-relaxed drop-shadow-md animate-fade-in-up animation-delay-200 font-light">
-                    Desafía la gravedad en Juan de Acosta. Un espacio diseñado para la diversión, fotos creativas y momentos inolvidables en familia.
-                </p>
-
-            </div>
-
-            <!-- Cotizador Widget -->
-            <div class="glass-card-solid p-6 md:p-8 rounded-3xl max-w-md mx-auto w-full animate-fade-in-up animation-delay-300" id="cotizador">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-serif font-bold">Cotiza tu Visita</h3>
-                    <div class="flex gap-1" id="step-indicators">
-                        <div class="h-1.5 w-6 rounded-full bg-brand-olive transition-all" id="ind-1"></div>
-                        <div class="h-1.5 w-6 rounded-full bg-brand-olive/20 transition-all" id="ind-2"></div>
-                        <div class="h-1.5 w-6 rounded-full bg-brand-olive/20 transition-all" id="ind-3"></div>
-                    </div>
-                </div>
-
-                <!-- Step 1 -->
-                <div id="step-1" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-bold mb-2">Entrada General ($20.000)</label>
-                        <div class="flex items-center justify-between bg-brand-beige/50 p-3 rounded-xl">
-                            <button onclick="updateCount('adults', -1)" class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center font-bold hover:bg-brand-olive hover:text-white transition-all hover-scale">-</button>
-                            <span id="adult-count" class="text-2xl font-bold font-serif">2</span>
-                            <button onclick="updateCount('adults', 1)" class="w-10 h-10 rounded-full bg-brand-dark text-white shadow-md flex items-center justify-center font-bold hover:bg-brand-olive transition-all hover-scale">+</button>
-                        </div>
-                    </div>
-                    
-                    <button onclick="goToStep(2)" class="w-full h-12 btn-primary text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2 btn-firefly">
-                        Siguiente
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          <!-- Step 2: Calendar -->
+          <div class="step-content" id="step-2">
+            <div class="calendar-step">
+              <p id="calendar-instruction">Selecciona el día de tu visita</p>
+              <div class="calendar">
+                <div class="calendar-header">
+                  <h4 id="calendar-month-year"></h4>
+                  <div class="calendar-nav">
+                    <button id="btn-prev-month" onclick="changeMonth(-1)">
+                      <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                     </button>
-                </div>
-
-                <!-- Step 2 -->
-                <div id="step-2" class="hidden space-y-4 text-center">
-                    <p class="font-bold mb-2">Elige una fecha aproximada</p>
-                    <input type="date" id="visit-date" class="w-full p-3 rounded-xl border border-brand-dark/20 focus:outline-none focus:ring-2 focus:ring-brand-olive bg-white/80 backdrop-blur-sm transition-all">
-                    <button onclick="goToStep(3)" class="w-full h-12 btn-primary text-white rounded-xl font-bold shadow-lg transition-all">Continuar</button>
-                    <button onclick="goToStep(1)" class="text-sm underline opacity-60 hover:opacity-100 transition-opacity">Volver</button>
-                </div>
-
-                <!-- Step 3 -->
-                <div id="step-3" class="hidden space-y-4">
-                    <div class="glass-card p-4 rounded-xl space-y-2 text-sm">
-                        <div class="flex justify-between"><span>Entradas:</span> <span id="summary-adults" class="font-bold"></span></div>
-                        <div class="flex justify-between border-t border-brand-dark/10 pt-2 font-bold text-lg"><span>Total:</span> <span id="summary-total"></span></div>
-                    </div>
-                    <input type="text" id="user-name" placeholder="Tu Nombre" class="w-full p-3 rounded-xl border border-brand-dark/20 bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-brand-olive transition-all">
-                    <input type="tel" id="user-phone" placeholder="Tu WhatsApp" class="w-full p-3 rounded-xl border border-brand-dark/20 bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-brand-olive transition-all">
-                    <button onclick="sendWhatsApp()" class="w-full h-12 btn-whatsapp text-white rounded-xl font-bold shadow-lg flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Enviar a WhatsApp
+                    <button onclick="changeMonth(1)">
+                      <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </button>
-                    <button onclick="goToStep(2)" class="w-full text-sm text-brand-dark/60 underline hover:text-brand-dark transition-colors">Volver</button>
+                  </div>
                 </div>
+                <div class="calendar-weekdays">
+                  <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
+                </div>
+                <div class="calendar-days" id="calendar-days"></div>
+              </div>
+              <div class="date-summary" id="date-summary">
+                <div class="date-summary-row">
+                  <div class="date-summary-col">
+                    <label id="start-label">Fecha</label>
+                    <span id="start-date">—</span>
+                  </div>
+                  <span class="date-summary-arrow" id="date-arrow" style="display:none;">→</span>
+                  <div class="date-summary-col" id="end-col" style="display:none;">
+                    <label>Salida</label>
+                    <span id="end-date">—</span>
+                  </div>
+                </div>
+                <div class="date-summary-total" id="nights-total" style="display:none;"></div>
+              </div>
             </div>
+          </div>
+
+          <!-- Step 3: Contact -->
+          <div class="step-content" id="step-3">
+            <div class="contact-step">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Nombre *</label>
+                  <input type="text" id="input-firstname" placeholder="Tu nombre">
+                  <div class="form-error" id="error-firstname"></div>
+                </div>
+                <div class="form-group">
+                  <label>Apellido *</label>
+                  <input type="text" id="input-lastname" placeholder="Tu apellido">
+                  <div class="form-error" id="error-lastname"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Celular (WhatsApp) *</label>
+                <div class="phone-input">
+                  <span class="phone-prefix">+57</span>
+                  <input type="tel" id="input-phone" placeholder="3001234567" maxlength="10">
+                </div>
+                <div class="form-error" id="error-phone"></div>
+              </div>
+              <div class="form-group">
+                <label>Correo electrónico (opcional)</label>
+                <input type="email" id="input-email" placeholder="tu@email.com">
+                <div class="form-error" id="error-email"></div>
+              </div>
+              <div class="form-group">
+                <label>Fecha de cumpleaños (opcional)</label>
+                <div class="birthday-row">
+                  <select id="select-day"><option value="">Día</option></select>
+                  <select id="select-month"><option value="">Mes</option></select>
+                  <select id="select-year"><option value="">Año</option></select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Confirmation -->
+          <div class="step-content" id="step-4">
+            <div class="confirm-step">
+              <div class="confirm-summary">
+                <h4>Resumen de tu reserva</h4>
+                <div class="confirm-row"><span class="label">Tipo</span><span class="value" id="confirm-type"></span></div>
+                <div class="confirm-row"><span class="label">Personas</span><span class="value" id="confirm-guests"></span></div>
+                <div class="confirm-row"><span class="label" id="confirm-dates-label">Fecha</span><span class="value" id="confirm-dates"></span></div>
+                <div class="confirm-row" id="confirm-nights-row" style="display:none;"><span class="label">Noches</span><span class="value" id="confirm-nights"></span></div>
+                <div class="confirm-row"><span class="label">Contacto</span><span class="value" id="confirm-contact"></span></div>
+                <div class="confirm-total"><span class="label">Total estimado</span><span class="value" id="confirm-total"></span></div>
+              </div>
+              <div class="checkbox-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="check-policies">
+                  <span class="checkbox-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span>
+                  <span>Acepto las <a href="https://ejemplo.com/politicas-cancelacion" target="_blank">políticas de cancelación</a> y <a href="https://ejemplo.com/terminos-uso" target="_blank">términos de uso</a></span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="check-contact">
+                  <span class="checkbox-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></span>
+                  <span>Acepto ser contactado por WhatsApp o llamada telefónica para confirmar la reserva</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Success -->
+          <div class="step-content" id="step-success">
+            <div class="success-step">
+              <div class="success-icon">
+                <svg class="icon-lg" fill="none" stroke="#6ee7b7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/></svg>
+              </div>
+              <h3 class="font-serif">¡Pre-reserva Exitosa!</h3>
+              <p>Hemos recibido tu solicitud para Cabaña Los Pelaitos. Nos comunicaremos contigo en las próximas 24 horas para confirmar tu reserva.</p>
+              <button class="btn-nueva-reserva" onclick="resetBooking()">Nueva Reserva</button>
+            </div>
+          </div>
         </div>
-    </section>
-
-    <!-- 360 Tour Section -->
-    <section id="recorrido-360" class="py-24 bg-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-olive/5 to-transparent"></div>
-        <div class="container mx-auto px-4 relative">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-serif mb-4">Recorrido 360°</h2>
-                <p class="text-brand-dark/70 max-w-2xl mx-auto italic">Explora cada rincón desde dentro. Una experiencia inmersiva total.</p>
-            </div>
-            
-            <div id="tour-container" class="aspect-[4/5] md:aspect-video w-full max-w-5xl mx-auto rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white relative group bg-black">
-                
-                <iframe 
-                    src="https://tour.panoee.net/69596ef3a02688e0fb189ab6" 
-                    name="Tour360"
-                    width="100%" 
-                    height="100%" 
-                    frameborder="0"
-                    style="border:0;" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; vr" 
-                    allowfullscreen="true" 
-                    loading="eager" 
-                    scrolling="no"
-                    class="absolute inset-0 w-full h-full z-0">
-                </iframe>
-
-                <div id="tour-overlay" onclick="hideOverlay()" class="absolute inset-0 z-10 flex flex-col items-center justify-center tour-curtain-clean cursor-pointer transition-all duration-500 hover:backdrop-blur-none">
-                    
-                    <div class="w-48 h-48 glass-apple rounded-full flex flex-col items-center justify-center animate-pulse-luxury transition-transform duration-300 group-hover:scale-105">
-                        <span class="font-serif text-5xl font-bold text-gradient-flow mb-2">360°</span>
-                        <div class="w-12 h-[1px] bg-brand-dark/30 mb-3"></div>
-                        <span class="text-xs tracking-[0.25em] font-bold text-brand-dark uppercase opacity-80">CLICK TO TOUR</span>
-                    </div>
-
-                </div>
-            </div>
+        <div class="booking-nav" id="booking-nav">
+          <button class="btn-back" id="btn-back" onclick="prevStep()">
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            Atrás
+          </button>
+          <button class="btn-next" id="btn-next" onclick="nextStep()">
+            Continuar
+            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
         </div>
-    </section>
+      </div>
 
-    <div class="section-divider"></div>
+      <p class="no-plan-msg" id="no-plan-msg">Selecciona un plan para comenzar tu reserva</p>
+    </div>
+  </section>
 
-    <!-- Experience Section -->
-    <section id="experiencia" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-serif mb-4">Experiencia 360°</h2>
-                <p class="text-brand-dark/70 max-w-2xl mx-auto">Descubre por qué La Casa Voltiá es la atracción más comentada del Caribe.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="glass-card p-8 rounded-3xl text-center group cursor-pointer hover-lift">
-                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-brand-olive/20 to-brand-olive/10 rounded-2xl flex items-center justify-center text-brand-olive mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-serif mb-3">Fotos Épicas</h3>
-                    <p class="text-brand-dark/70">Cada rincón es un escenario perfecto para tus redes sociales. Desafía la realidad.</p>
-                </div>
-                <!-- Card 2 -->
-                <div class="glass-card p-8 rounded-3xl text-center group cursor-pointer hover-lift">
-                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-brand-olive/20 to-brand-olive/10 rounded-2xl flex items-center justify-center text-brand-olive mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-serif mb-3">Plan Familiar</h3>
-                    <p class="text-brand-dark/70">Diversión para todas las edades. Desde los más pequeños hasta los abuelos disfrutarán.</p>
-                </div>
-                <!-- Card 3 -->
-                <div class="glass-card p-8 rounded-3xl text-center group cursor-pointer hover-lift">
-                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-brand-olive/20 to-brand-olive/10 rounded-2xl flex items-center justify-center text-brand-olive mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-serif mb-3">Ubicación Perfecta</h3>
-                    <p class="text-brand-dark/70">En el Km 65 Vía al Mar, el punto estratégico ideal entre Barranquilla y Cartagena.</p>
-                </div>
-            </div>
+  <!-- UBICACION -->
+  <section class="ubicacion-section" id="ubicacion">
+    <div class="ubicacion-overlay"></div> <!-- Capa oscura añadida -->
+    <div class="ubicacion-inner">
+      <div class="ubicacion-map">
+        <div class="ubicacion-map-container">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31351.49479389279!2d-74.76451559999999!3d10.809461!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ef42d63e9e1c3b1%3A0xe5f8e5b5e5e5e5e5!2sSabanagrande%2C%20Atl%C3%A1ntico!5e0!3m2!1ses!2sco!4v1620000000000!5m2!1ses!2sco" allowfullscreen loading="lazy"></iframe>
+          <div class="ubicacion-map-pin">
+            <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
         </div>
-    </section>
+      </div>
+      <div class="ubicacion-text">
+        <span>Ubicación Privilegiada</span>
+        <h2 class="font-serif">Fácil de llegar,<br>difícil de olvidar</h2>
+        <p>Estamos ubicados en Sabanagrande, Atlántico, a solo 15 minutos del aeropuerto y con vías de acceso pavimentadas hasta la entrada.</p>
+        <a href="https://maps.app.goo.gl/N959x7dAkn9LVDTq5" target="_blank" class="btn-como-llegar">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          Cómo llegar
+        </a>
+      </div>
+    </div>
+  </section>
 
-    <!-- Gastronomy Section -->
-    <section id="gastronomia" class="py-24 bg-brand-beige relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-80 h-80 bg-brand-pink/10 rounded-full blur-3xl"></div>
-        <div class="container mx-auto px-4 relative">
-            <div class="mb-12 text-center md:text-left">
-                <h3 class="text-xl md:text-2xl font-bold tracking-[0.3em] text-brand-olive uppercase mb-4">Akí es la Vuelta</h3>
-                <p class="text-5xl md:text-7xl lg:text-8xl font-serif text-brand-dark leading-tight">Restaurante <span class="italic">&</span> Café</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <!-- Menu Item 1 -->
-                <div class="glass-card-solid rounded-3xl overflow-hidden group hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="img/hamburguesa.jpg" alt="Hamburguesa Doble Smash" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold font-serif">Hamburguesa 'Doble Smash'</h3>
-                            <span class="text-brand-olive font-bold">$43.000</span>
-                        </div>
-                        <p class="text-brand-dark/70 text-sm">Doble carne, tomate, lechuga, queso cheddar</p>
-                    </div>
-                </div>
-                <!-- Menu Item 2 -->
-                <div class="glass-card-solid rounded-3xl overflow-hidden group hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="img/cafe.jpg" alt="Chocolate caliente" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold font-serif">Chocolate caliente</h3>
-                            <span class="text-brand-olive font-bold">$10.000</span>
-                        </div>
-                        <p class="text-brand-dark/70 text-sm">Bebida caliente de 9oz, especialidad de la casa.</p>
-                    </div>
-                </div>
-                <!-- Menu Item 3 -->
-                <div class="glass-card-solid rounded-3xl overflow-hidden group hover-lift">
-                    <div class="h-64 overflow-hidden">
-                        <img src="img/deditos.jpg" alt="Deditos de Queso" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold font-serif">Deditos de Queso</h3>
-                            <span class="text-brand-olive font-bold">$15.000</span>
-                        </div>
-                        <p class="text-brand-dark/70 text-sm">Porción de 3 unidades grandes. Doraditos y crujientes.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="flex justify-center">
-                <a href="pdf/La-Casa-Voltia-Menu.pdf" download class="group flex items-center gap-3 bg-gradient-to-r from-brand-dark to-brand-green text-white px-10 py-5 rounded-full font-bold text-lg shadow-xl hover:scale-105 hover:-translate-y-1 transition-all">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    Ver menú completo
-                </a>
-            </div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h4 class="font-serif">Cabaña Los Pelaitos</h4>
+        <p>Un refugio exclusivo diseñado para desconectar de la rutina y reconectar con lo esencial. Sabanagrande, Atlántico.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Explorar</h4>
+        <ul>
+          <li><button onclick="scrollToSection('experiencia')">La Cabaña</button></li>
+          <li><button onclick="scrollToSection('experiencia')">Galería</button></li>
+          <li><button onclick="scrollToSection('comodidades')">Servicios</button></li>
+          <li><button onclick="scrollToSection('ubicacion')">Ubicación</button></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Social</h4>
+        <div class="footer-social">
+          <a href="https://instagram.com/cabanalospelaitos" target="_blank">
+            <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://facebook.com/cabanalospelaitos" target="_blank">
+            <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://wa.me/573001234567" target="_blank">
+            <svg class="icon" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
         </div>
-    </section>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Cabaña Los Pelaitos.</p>
+      <p>Diseño y Desarrollo Exclusivo</p>
+    </div>
+  </footer>
 
-    <!-- Gallery Section -->
-    <section id="galeria" class="py-20 bg-white overflow-hidden">
-        <div class="container mx-auto px-4 text-center mb-12">
-            <h2 class="text-4xl md:text-5xl font-serif mb-4">Nuestros Espacios</h2>
-            <p class="text-brand-dark/60">Fachada, interiores y momentos únicos</p>
-        </div>
-        
-        <div class="relative w-full pause-on-hover">
-            
-            <div class="absolute left-0 top-0 h-full w-20 md:w-32 z-10 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
-            
-            <div class="absolute right-0 top-0 h-full w-20 md:w-32 z-10 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
+  <script>
+    // === STATE ===
+    let bookingType = null;
+    let currentStep = 1;
+    let guests = 2;
+    let startDate = null;
+    let endDate = null;
+    let currentMonth = new Date();
+    const PRICE_PASS = 50000;
+    const PRICE_STAY = 70000;
+    const MIN_GUESTS = 1;
+    const MAX_GUESTS = 16;
+    const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const today = new Date(); today.setHours(0,0,0,0);
+    let currentSlide = 0;
+    let slideInterval;
 
-            <div class="flex overflow-hidden">
-                <div class="flex gap-6 animate-scroll-rtl whitespace-nowrap py-4 px-4">
-                    
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/1.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/2.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/3.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/4.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/5.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/6.jpg" class="w-full h-full object-cover"></div>
-                    
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/7.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/8.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/9.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/10.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/11.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/12.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/13.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/14.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/15.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/16.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/17.jpg" loading="lazy" class="w-full h-full object-cover"></div>
+    // === NAV SCROLL (LIMPIO PARA IMÁGENES) ===
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('navbar');
+      const links = document.getElementById('nav-links');
+      const btn = document.getElementById('mobile-menu-btn');
+      
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+        // Colores de enlaces para fondo blanco (Texto oscuro)
+        links.querySelectorAll('button').forEach(b => { b.style.color = '#292524'; });
+        btn.style.color = '#1c1917';
+      } else {
+        nav.classList.remove('scrolled');
+        // Colores de enlaces para fondo transparente (Texto blanco)
+        links.querySelectorAll('button').forEach(b => { b.style.color = 'white'; });
+        btn.style.color = 'white';
+      }
+    });
 
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/1.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/2.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/3.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/4.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/5.jpg" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/6.jpg" class="w-full h-full object-cover"></div>
-                    
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/7.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/8.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/9.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/10.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/11.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/12.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/13.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/14.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/15.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/16.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                    <div class="w-[45vw] md:w-[25vw] h-[30vh] md:h-[40vh] rounded-2xl overflow-hidden shrink-0 shadow-lg hover:scale-105 transition-transform duration-300"><img src="img/17.jpg" loading="lazy" class="w-full h-full object-cover"></div>
-                </div>
-            </div>
-        </div>
-    </section>
+    function scrollToTop(e) { e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); }
+    function scrollToSection(id) { document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+    function openMobileMenu() { document.getElementById('mobile-menu').classList.add('open'); }
+    function closeMobileMenu() { document.getElementById('mobile-menu').classList.remove('open'); }
 
-    <!-- Reviews Section - Google Maps Style -->
-    <section class="py-20 bg-gray-100 overflow-hidden">
-        <div class="container mx-auto px-4 text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-serif text-gray-800 mb-2">Lo que dicen nuestros visitantes</h2>
-            <div class="flex justify-center items-center gap-2 mb-4">
-                <span class="text-2xl font-bold text-gray-800">4.9</span>
-                <div class="flex gap-0.5">
-                    <svg class="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg class="w-5 h-5 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-                <span class="text-gray-500 text-sm">en Google Reviews</span>
-            </div>
-        </div>
+    // === GALLERY ===
+    function goToSlide(index) {
+      currentSlide = index;
+      document.querySelectorAll('.gallery-slide').forEach((s,i) => s.classList.toggle('active', i===index));
+      document.querySelectorAll('.gallery-dot').forEach((d,i) => d.classList.toggle('active', i===index));
+    }
+    function startGallery() {
+      slideInterval = setInterval(() => { goToSlide((currentSlide+1)%4); }, 5000);
+    }
+    startGallery();
 
-        <div class="flex overflow-hidden">
-            <div class="flex gap-4 animate-scroll-reviews whitespace-nowrap px-4">
-                <!-- Review 1 -->
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #4285F4;">M</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">María G.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 15 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 2 semanas</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">¡Increíble experiencia! Mis hijos no paraban de reír. Las fotos quedaron espectaculares.</p>
-                </div>
-                <!-- Review 2 -->
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #EA4335;">C</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">Carlos R.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 8 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 1 mes</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">Un lugar único en Colombia. La atención es excelente y el restaurante delicioso.</p>
-                </div>
-                <!-- Review 3 -->
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #FBBC04;">A</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">Ana M.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 23 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 3 semanas</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">Perfecto para pasar un día diferente en familia. Totalmente recomendado.</p>
-                </div>
-                <!-- Review 4 -->
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #34A853;">P</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">Pedro L.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 11 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 1 semana</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">Las fotos que tomamos aquí son las más comentadas en mis redes. Volveremos.</p>
-                </div>
-                <!-- Review 5 -->
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #9334E6;">L</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">Laura S.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 5 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 2 meses</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">Excelente lugar, muy bien mantenido. El personal muy amable.</p>
-                </div>
-                <!-- Duplicated for seamless loop -->
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #4285F4;">M</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">María G.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 15 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 2 semanas</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">¡Increíble experiencia! Mis hijos no paraban de reír. Las fotos quedaron espectaculares.</p>
-                </div>
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #EA4335;">C</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">Carlos R.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 8 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 1 mes</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">Un lugar único en Colombia. La atención es excelente y el restaurante delicioso.</p>
-                </div>
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #FBBC04;">A</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">Ana M.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 23 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 3 semanas</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">Perfecto para pasar un día diferente en familia. Totalmente recomendado.</p>
-                </div>
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #34A853;">P</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">Pedro L.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 11 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 1 semana</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">Las fotos que tomamos aquí son las más comentadas en mis redes. Volveremos.</p>
-                </div>
-                <div class="w-80 shrink-0 google-review-card p-4">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-lg shrink-0" style="background-color: #9334E6;">L</div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-800 text-sm">Laura S.</p>
-                            <p class="text-xs text-gray-500">Local Guide · 5 reseñas</p>
-                        </div>
-                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC04" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                    </div>
-                    <div class="flex items-center gap-1 mb-2">
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <svg class="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        <span class="text-xs text-gray-500 ml-1">hace 2 meses</span>
-                    </div>
-                    <p class="text-gray-700 text-sm leading-relaxed whitespace-normal">Excelente lugar, muy bien mantenido. El personal muy amable.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    // === AMENITIES ===
+    function toggleAmenities() {
+      const el = document.getElementById('extra-amenities');
+      const btn = document.getElementById('btn-ver-mas');
+      el.classList.toggle('show');
+      btn.textContent = el.classList.contains('show') ? 'Ver menos' : 'Ver lista completa';
+    }
 
-    <!-- Location Section -->
-    <section id="ubicacion" class="py-24 bg-white relative">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-serif mb-4">Visítanos</h2>
-                <p class="text-brand-dark/70 max-w-2xl mx-auto">Estamos en el corazón de la Vía al Mar, fácil acceso desde Barranquilla y Cartagena.</p>
-            </div>
+    // === BOOKING ===
+    function selectPlan(type) {
+      bookingType = type;
+      document.getElementById('card-pass').classList.toggle('selected', type==='pass');
+      document.getElementById('card-stay').classList.toggle('selected', type==='stay');
+      document.getElementById('booking-form').classList.add('show');
+      document.getElementById('no-plan-msg').style.display = 'none';
+      currentStep = 1;
+      startDate = null;
+      endDate = null;
+      updateStepUI();
+      renderCalendar();
+      document.getElementById('calendar-instruction').textContent = type==='pass' ? 'Selecciona el día de tu visita' : 'Selecciona fecha de llegada y salida';
+      setTimeout(() => { document.getElementById('booking-form').scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
+    }
 
-            <div class="relative w-full max-w-6xl mx-auto h-[650px] md:h-[500px] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white/50 group">
-                
-                <iframe 
-                    src="https://embed.waze.com/iframe?zoom=16&lat=10.834996&lon=-75.141250&ct=livemap" 
-                    width="100%" 
-                    height="100%" 
-                    allowfullscreen 
-                    style="border:0;"
-                    class="absolute inset-0 w-full h-full grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+    function changeGuests(delta) {
+      const newVal = guests + delta;
+      if (newVal >= MIN_GUESTS && newVal <= MAX_GUESTS) {
+        guests = newVal;
+        document.getElementById('guests-count').textContent = guests;
+      }
+      document.getElementById('btn-minus').disabled = guests <= MIN_GUESTS;
+      document.getElementById('btn-plus').disabled = guests >= MAX_GUESTS;
+    }
 
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:hidden pointer-events-none"></div>
+    function updateStepUI() {
+      const titles = ['','Número de Invitados','Selecciona tu Fecha','Tus Datos de Contacto','Confirmar Reserva'];
+      document.getElementById('step-label').textContent = 'Paso ' + currentStep + ' de 4';
+      document.getElementById('step-title').textContent = titles[currentStep];
+      for (let i=1; i<=4; i++) {
+        document.getElementById('step-'+i).classList.toggle('active', i===currentStep);
+        const dot = document.getElementById('dot-'+i);
+        dot.classList.remove('active','completed');
+        if (i===currentStep) dot.classList.add('active');
+        else if (i<currentStep) dot.classList.add('completed');
+      }
+      document.getElementById('step-success').classList.remove('active');
+      document.getElementById('btn-back').classList.toggle('show', currentStep>1);
+      document.getElementById('booking-nav').style.display = 'flex';
+      if (currentStep===4) {
+        document.getElementById('btn-next').innerHTML = 'Solicitar Pre-reserva';
+        updateConfirmation();
+      } else {
+        document.getElementById('btn-next').innerHTML = 'Continuar <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
+      }
+      updateNextBtn();
+    }
 
-                <div class="absolute bottom-0 left-0 w-full md:top-1/2 md:-translate-y-1/2 md:left-12 md:w-96 p-6 md:p-0 z-20 pointer-events-none">
-                    
-                    <div class="glass-card-solid p-8 rounded-3xl shadow-2xl backdrop-blur-xl border border-white/60 pointer-events-auto">
-                        <div class="space-y-6">
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-full bg-brand-olive text-white flex items-center justify-center shrink-0 shadow-lg">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-lg leading-none mb-1 text-brand-dark">Dirección</h4>
-                                    <p class="text-sm text-brand-dark/80">Km 65 Vía al Mar, Juan de Acosta</p>
-                                </div>
-                            </div>
+    function updateNextBtn() {
+      let canProceed = true;
+      if (currentStep===2) {
+        canProceed = bookingType==='pass' ? startDate!==null : (startDate!==null && endDate!==null);
+      } else if (currentStep===4) {
+        canProceed = document.getElementById('check-policies').checked && document.getElementById('check-contact').checked;
+      }
+      document.getElementById('btn-next').disabled = !canProceed;
+    }
 
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-full bg-brand-olive text-white flex items-center justify-center shrink-0 shadow-lg">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-lg leading-none mb-1 text-brand-dark">Horarios</h4>
-                                    <p class="text-sm text-brand-dark/80">Todos los días: 9:00 AM - 6:00 PM</p>
-                                </div>
-                            </div>
+    function nextStep() {
+      if (currentStep===3 && !validateForm()) return;
+      if (currentStep===4) { submitBooking(); return; }
+      currentStep++;
+      updateStepUI();
+    }
 
-                            <a href="https://www.waze.com/en/live-map/directions/co/atlantico/juan-de-acosta/la-casa-voltia?place=ChIJkacRfAB79o4RBgAjOTcgWQE" target="_blank" class="block w-full py-3 bg-gradient-to-r from-brand-dark to-brand-green text-white text-center rounded-xl font-bold shadow-lg hover-float flex items-center justify-center gap-2 transition-transform hover:scale-105">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                                ¡Llévame ahí con Waze!
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    function prevStep() {
+      if (currentStep>1) { currentStep--; updateStepUI(); }
+    }
 
-            </div>
-        </div>
-    </section>
+    function validateForm() {
+      let valid = true;
+      const fn = document.getElementById('input-firstname').value.trim();
+      const ln = document.getElementById('input-lastname').value.trim();
+      const ph = document.getElementById('input-phone').value.trim();
+      const em = document.getElementById('input-email').value.trim();
+      document.querySelectorAll('.form-error').forEach(e => e.textContent = '');
+      document.querySelectorAll('.contact-step input').forEach(i => i.classList.remove('error'));
+      if (fn.length < 2) { document.getElementById('error-firstname').textContent = 'Mínimo 2 caracteres'; document.getElementById('input-firstname').classList.add('error'); valid = false; }
+      if (ln.length < 2) { document.getElementById('error-lastname').textContent = 'Mínimo 2 caracteres'; document.getElementById('input-lastname').classList.add('error'); valid = false; }
+      if (ph.length !== 10) { document.getElementById('error-phone').textContent = 'Debe tener exactamente 10 dígitos'; document.getElementById('input-phone').classList.add('error'); valid = false; }
+      if (em && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { document.getElementById('error-email').textContent = 'Formato de correo inválido'; document.getElementById('input-email').classList.add('error'); valid = false; }
+      return valid;
+    }
 
-    <!-- Footer -->
-    <footer class="relative bg-[#1a2e0d] text-white pt-24 pb-12 overflow-hidden mt-[-2px]">
-        
-        <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0]">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[60px] md:h-[100px] fill-white">
-                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
-            </svg>
-        </div>
+    function updateConfirmation() {
+      document.getElementById('confirm-type').textContent = bookingType==='pass' ? 'Pasadía' : 'Estadía Completa';
+      document.getElementById('confirm-guests').textContent = guests;
+      document.getElementById('confirm-dates-label').textContent = bookingType==='pass' ? 'Fecha' : 'Fechas';
+      let dateStr = startDate ? formatDate(startDate) : '—';
+      if (endDate) dateStr += ' - ' + formatDate(endDate);
+      document.getElementById('confirm-dates').textContent = dateStr;
+      if (bookingType==='stay' && endDate) {
+        document.getElementById('confirm-nights-row').style.display = 'flex';
+        document.getElementById('confirm-nights').textContent = calculateNights();
+      } else {
+        document.getElementById('confirm-nights-row').style.display = 'none';
+      }
+      const fn = document.getElementById('input-firstname').value.trim();
+      const ln = document.getElementById('input-lastname').value.trim();
+      document.getElementById('confirm-contact').textContent = fn + ' ' + ln;
+      document.getElementById('confirm-total').textContent = formatCurrency(calculateTotal());
+    }
 
-        <div class="absolute -bottom-10 -right-10 pointer-events-none select-none opacity-5">
-            <span class="text-[15rem] md:text-[20rem] font-serif font-bold text-outline-opacity leading-none">V</span>
-        </div>
+    function submitBooking() {
+      // 1. Efecto visual de carga
+      const btn = document.getElementById('btn-next');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<svg class="icon-sm animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Enviando...';
+      btn.disabled = true;
 
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="grid md:grid-cols-4 gap-12 mb-16">
-                
-                <div class="md:col-span-1">
-                    <img src="img/logo.png" alt="Logo Footer" class="h-24 w-auto brightness-0 invert opacity-90 mb-6">
-                    <p class="text-brand-beige/60 text-sm leading-relaxed">
-                        Un lugar donde la realidad se transforma y la diversión toma una nueva perspectiva. 
-                    </p>
-                </div>
+      // 2. Preparar datos
+      const formattedStart = startDate ? startDate.toISOString().split('T')[0] : '';
+      const formattedEnd = endDate ? endDate.toISOString().split('T')[0] : formattedStart;
 
-                <div>
-                    <h4 class="font-serif text-2xl mb-6 text-brand-olive">Explorar</h4>
-                    <ul class="space-y-3 text-brand-beige/80">
-                        <li><a href="#experiencia" class="hover:text-white hover:translate-x-2 transition-all inline-block">Experiencia</a></li>
-                        <li><a href="#gastronomia" class="hover:text-white hover:translate-x-2 transition-all inline-block">Gastronomía</a></li>
-                        <li><a href="#galeria" class="hover:text-white hover:translate-x-2 transition-all inline-block">Galería</a></li>
-                        <li><a href="#recorrido-360" class="hover:text-white hover:translate-x-2 transition-all inline-block">Tour Virtual</a></li>
-                    </ul>
-                </div>
+      const bookingData = {
+        nombre: document.getElementById('input-firstname').value.trim(),
+        apellido: document.getElementById('input-lastname').value.trim(),
+        telefono: document.getElementById('input-phone').value.trim(),
+        email: document.getElementById('input-email').value.trim(),
+        plan: bookingType, 
+        personas: guests,
+        llegada: formattedStart,
+        salida: formattedEnd,
+        total: formatCurrency(calculateTotal())
+      };
 
-                <div>
-                    <h4 class="font-serif text-2xl mb-6 text-brand-olive">Síguenos</h4>
-                    <div class="flex gap-4">
-                        <a href="https://www.instagram.com/lacasavoltia/" target="_blank" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-olive hover:scale-110 transition-all group">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                        </a>
-                        <a href="https://api.whatsapp.com/send?phone=573117171820" target="_blank" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-olive hover:scale-110 transition-all group">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
+      // 3. Enviar a Google
+      // URL ACTUALIZADA
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyR3C-2KgZ17JvOm7fZTgdyhUOqV0bMLQvuL3uemX9dEcdwtnTc4pYstyE09F8Yt3Zz/exec';
 
-            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-brand-beige/40">
-                <p>&copy; 2025 La Casa Voltiá. Todos los derechos reservados.</p>
-                <p>Diseñado con ❤️ en el Caribe.</p>
-            </div>
-        </div>
-    </footer>
+      fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData)
+      })
+      .then(() => {
+        // 4. Éxito
+        setTimeout(() => {
+          for (let i=1; i<=4; i++) document.getElementById('step-'+i).classList.remove('active');
+          document.getElementById('step-success').classList.add('active');
+          document.getElementById('booking-nav').style.display = 'none';
+          for (let i=1; i<=4; i++) { 
+            document.getElementById('dot-'+i).classList.remove('active'); 
+            document.getElementById('dot-'+i).classList.add('completed'); 
+          }
+        }, 1000);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error al conectar. Por favor escríbenos al WhatsApp.');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      });
+    }
 
-    <!-- JavaScript -->
-    <script>
-        // State
-        let adults = 2;
-        let children = 0;
-        let currentStep = 1;
+    function resetBooking() {
+      bookingType = null;
+      currentStep = 1;
+      guests = 2;
+      startDate = null;
+      endDate = null;
+      document.getElementById('guests-count').textContent = '2';
+      document.getElementById('input-firstname').value = '';
+      document.getElementById('input-lastname').value = '';
+      document.getElementById('input-phone').value = '';
+      document.getElementById('input-email').value = '';
+      document.getElementById('check-policies').checked = false;
+      document.getElementById('check-contact').checked = false;
+      document.getElementById('card-pass').classList.remove('selected');
+      document.getElementById('card-stay').classList.remove('selected');
+      document.getElementById('booking-form').classList.remove('show');
+      document.getElementById('no-plan-msg').style.display = 'block';
+      document.getElementById('step-success').classList.remove('active');
+      scrollToSection('reservar');
+    }
 
-        // Update counts
-        function updateCount(type, delta) {
-            if (type === 'adults') {
-                adults = Math.max(0, adults + delta);
-                document.getElementById('adult-count').textContent = adults;
-            } else {
-                children = Math.max(0, children + delta);
-                document.getElementById('child-count').textContent = children;
-            }
+    // === CALENDAR ===
+    function renderCalendar() {
+      const year = currentMonth.getFullYear();
+      const month = currentMonth.getMonth();
+      document.getElementById('calendar-month-year').textContent = monthNames[month] + ' ' + year;
+      const isCurrentMonth = year===today.getFullYear() && month===today.getMonth();
+      document.getElementById('btn-prev-month').disabled = isCurrentMonth;
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month+1, 0).getDate();
+      let html = '';
+      for (let i=0; i<firstDay; i++) html += '<button class="calendar-day" disabled></button>';
+      for (let d=1; d<=daysInMonth; d++) {
+        const date = new Date(year, month, d);
+        const isPast = date < today;
+        const isStart = startDate && date.getTime()===startDate.getTime();
+        const isEnd = endDate && date.getTime()===endDate.getTime();
+        const inRange = startDate && endDate && date>startDate && date<endDate;
+        let cls = 'calendar-day';
+        if (isStart || isEnd) cls += ' selected';
+        else if (inRange) cls += ' in-range';
+        html += '<button class="'+cls+'" '+(isPast?'disabled':'')+' onclick="selectDate('+year+','+month+','+d+')">'+d+'</button>';
+      }
+      document.getElementById('calendar-days').innerHTML = html;
+      updateDateSummary();
+    }
+
+    function changeMonth(delta) {
+      currentMonth.setMonth(currentMonth.getMonth()+delta);
+      renderCalendar();
+    }
+
+    function selectDate(year, month, day) {
+      const date = new Date(year, month, day);
+      if (bookingType==='pass') { startDate = date; endDate = null; }
+      else {
+        if (!startDate || (startDate && endDate) || date<startDate) { startDate = date; endDate = null; }
+        else { endDate = date; }
+      }
+      renderCalendar();
+      updateNextBtn();
+    }
+
+    function updateDateSummary() {
+      const summary = document.getElementById('date-summary');
+      if (startDate) {
+        summary.classList.add('show');
+        document.getElementById('start-date').textContent = formatDate(startDate);
+        if (bookingType==='stay') {
+          document.getElementById('start-label').textContent = 'Llegada';
+          document.getElementById('date-arrow').style.display = 'inline';
+          document.getElementById('end-col').style.display = 'block';
+          document.getElementById('end-date').textContent = endDate ? formatDate(endDate) : '—';
+          if (endDate) {
+            document.getElementById('nights-total').style.display = 'block';
+            document.getElementById('nights-total').textContent = calculateNights()+' noche'+(calculateNights()>1?'s':'')+' • '+formatCurrency(calculateTotal());
+          } else {
+            document.getElementById('nights-total').style.display = 'none';
+          }
+        } else {
+          document.getElementById('start-label').textContent = 'Fecha';
+          document.getElementById('date-arrow').style.display = 'none';
+          document.getElementById('end-col').style.display = 'none';
+          document.getElementById('nights-total').style.display = 'none';
         }
+      } else {
+        summary.classList.remove('show');
+      }
+    }
 
-        // Step navigation
-        function goToStep(step) {
-            currentStep = step;
-            
-            // Hide all steps
-            document.getElementById('step-1').classList.add('hidden');
-            document.getElementById('step-2').classList.add('hidden');
-            document.getElementById('step-3').classList.add('hidden');
-            
-            // Show current step
-            document.getElementById('step-' + step).classList.remove('hidden');
-            
-            // Update indicators
-            for (let i = 1; i <= 3; i++) {
-                const ind = document.getElementById('ind-' + i);
-                if (i <= step) {
-                    ind.classList.remove('bg-brand-olive/20');
-                    ind.classList.add('bg-brand-olive');
-                } else {
-                    ind.classList.add('bg-brand-olive/20');
-                    ind.classList.remove('bg-brand-olive');
-                }
-            }
-            
-            // Update summary if on step 3
-            if (step === 3) {
-                const total = adults * 20000;
-                document.getElementById('summary-adults').textContent = adults + ' x $20.000';
-                document.getElementById('summary-total').textContent = '$' + total.toLocaleString();
-            }
-        }
+    function formatDate(date) {
+      const days = ['dom','lun','mar','mié','jue','vie','sáb'];
+      const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+      return days[date.getDay()]+', '+date.getDate()+' '+months[date.getMonth()];
+    }
 
-        // WhatsApp (Actualizado: Sin niños y con número real)
-        function sendWhatsApp() {
-            const visitDate = document.getElementById('visit-date').value;
-            const userName = document.getElementById('user-name').value.trim();
-            const userPhone = document.getElementById('user-phone').value.trim();
-            const total = adults * 20000;
-            
-            // Validación básica
-            if (userName === "" || userPhone === "") {
-                alert("Por favor, escribe tu Nombre y tu WhatsApp para poder enviarte la cotización.");
-                return; 
-            }
+    function formatCurrency(amount) {
+      return '$' + amount.toLocaleString('es-CO') + ' COP';
+    }
 
-            // Mensaje limpio (Sin preguntar por niños)
-            const message = encodeURIComponent(
-                '¡Hola! Quiero reservar en La Casa Voltiá:\n\n' +
-                '🎟️ Entradas: ' + adults + ' personas\n' +
-                '📅 Fecha: ' + visitDate + '\n' +
-                '💰 Total: $' + total.toLocaleString() + '\n\n' +
-                'Nombre: ' + userName + '\n' +
-                'Teléfono: ' + userPhone
-            );
-            
-            // Reemplaza el número aquí si necesitas cambiarlo en el futuro
-            window.open('https://wa.me/573117171820?text=' + message, '_blank');
-        }
+    function calculateNights() {
+      if (!startDate || !endDate) return 0;
+      return Math.ceil((endDate-startDate)/(1000*60*60*24));
+    }
 
-// --- NUEVA LÓGICA DEL MENÚ ---
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
-        const topBanner = document.getElementById('top-banner');
+    function calculateTotal() {
+      if (bookingType==='pass') return PRICE_PASS * guests;
+      return PRICE_STAY * guests * calculateNights();
+    }
 
-        // 1. Abrir/Cerrar Menú
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+    // === FORM EVENTS ===
+    document.getElementById('input-phone').addEventListener('input', function(e) {
+      this.value = this.value.replace(/\D/g, '').slice(0,10);
+    });
+    document.getElementById('check-policies').addEventListener('change', updateNextBtn);
+    document.getElementById('check-contact').addEventListener('change', updateNextBtn);
 
-        // 2. Cerrar menú al tocar un enlace
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-
-        // 3. Efecto Scroll (Esconder la barra de colores al bajar)
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                // Al bajar: Ocultamos el banner suavemente
-                topBanner.style.height = '0';
-                topBanner.style.padding = '0';
-                topBanner.style.opacity = '0';
-            } else {
-                // Al subir: Lo mostramos de nuevo
-                topBanner.style.height = 'auto'; 
-                topBanner.style.padding = '0.5rem 0';
-                topBanner.style.opacity = '1';
-            }
-        });
-
-        // Lógica Luxury: Solo ocultamos el vidrio, el tour ya está listo abajo
-        function hideOverlay() {
-            const overlay = document.getElementById('tour-overlay');
-            // Activamos la clase CSS que lo hace invisible
-            overlay.classList.add('fade-out');
-            
-            // Opcional: Quitamos el borde blanco para inmersión total
-            document.getElementById('tour-container').classList.remove('border-4', 'border-white');
-        }
-
-        /* ... (tu código anterior) ... */
-
-        // PEGA ESTO AQUÍ (Justo antes de que cierre script)
-
-        // FUNCIÓN EFECTO CINE
-        function hidePoster() {
-            const poster = document.getElementById('video-poster');
-            if (poster) {
-                poster.classList.add('video-loaded');
-                setTimeout(() => { poster.remove(); }, 1600);
-            }
-        }
-        // Seguridad: Si el video falla en avisar, quitamos la foto a los 5s
-        setTimeout(hidePoster, 5000);
-
-    </script>
-    <a href="https://wa.me/573117171820" target="_blank" class="fixed bottom-6 right-6 z-50 animate-breathe group" aria-label="Chat en WhatsApp">
-        <div class="w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-2xl transition-all">
-            <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-        </div>
-    </a>
+    // === INIT ===
+    (function init() {
+      changeGuests(0);
+      renderCalendar();
+      // Populate birthday selects
+      const daySelect = document.getElementById('select-day');
+      for (let i=1; i<=31; i++) daySelect.innerHTML += '<option value="'+i+'">'+i+'</option>';
+      const monthSelect = document.getElementById('select-month');
+      monthNames.forEach((m,i) => monthSelect.innerHTML += '<option value="'+(i+1)+'">'+m.slice(0,3)+'</option>');
+      const yearSelect = document.getElementById('select-year');
+      const currentYear = new Date().getFullYear();
+      for (let i=0; i<80; i++) yearSelect.innerHTML += '<option value="'+(currentYear-i-10)+'">'+(currentYear-i-10)+'</option>';
+    })();
+  </script>
 </body>
 </html>
